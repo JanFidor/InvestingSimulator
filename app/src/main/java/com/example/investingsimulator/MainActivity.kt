@@ -6,6 +6,7 @@ import android.util.Log
 import com.example.investingsimulator.API_Fuckery.MarketHistorySingle
 import com.example.investingsimulator.API_Fuckery.QuoteDataWrapper
 import com.example.investingsimulator.API_Fuckery.RetrofitInstance
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
 import retrofit2.Response
 
@@ -45,5 +46,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
 }
 
