@@ -6,10 +6,15 @@ import retrofit2.http.Query
 
 interface TestRetrofit {
     @GET("/v1/markets/quotes")
-    fun test(@Query("symbols") symbols: String): Call<Model>
+    fun getCurrent(@Query("symbols") symbols: String): Call<QuoteDataWrapper>
 
     @GET("/v1/markets/history")
-    fun testHistory(@Query("symbol") symbols: String,
+    fun getShortHistory(@Query("symbol") symbols: String,
                     @Query("start") start: String,
-                    @Query("end") end: String,): Call<History>
+                    @Query("end") end: String,): Call<MarketHistorySingle>
+
+    @GET("/v1/markets/history")
+    fun getLongHistory(@Query("symbol") symbols: String,
+                       @Query("start") start: String,
+                       @Query("end") end: String,): Call<MarketHistoryMultiple>
 }

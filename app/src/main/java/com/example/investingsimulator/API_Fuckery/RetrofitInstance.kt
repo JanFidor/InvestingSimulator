@@ -9,10 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
     private const val TOKEN = "kGMhlocUonPNYwHKWL72zSqN8fQJ "
-
-    // for sandbox
-    //   "https://sandbox.tradier.com" ???
-    private const val URL = "https://sandbox.tradier.com/v1/"
+    private const val URL = "https://sandbox.tradier.com/"
 
     private val okHttp = OkHttpClient.Builder()
         .addInterceptor(Interceptor { chain ->
@@ -37,6 +34,6 @@ object RetrofitInstance {
             .client(okHttp)
             .build()
 
-    val InterfaceAPI = retrofit.create(TestRetrofit::class.java)
+    val InterfaceAPI: TestRetrofit = retrofit.create(TestRetrofit::class.java)
 
 }
