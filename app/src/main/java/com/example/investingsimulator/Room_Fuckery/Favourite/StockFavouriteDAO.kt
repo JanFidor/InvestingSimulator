@@ -4,12 +4,11 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.investingsimulator.Room_Fuckery.Wallet.StockBought
-import io.reactivex.rxjava3.core.Observable
+import com.example.investingsimulator.Room_Fuckery.Templates.StockDAO
 
 
 @Dao
-interface StockFavouriteDAO {
+interface StockFavouriteDAO: StockDAO {
     @Insert
     fun addStock(stock: StockFavourite)
 
@@ -17,7 +16,7 @@ interface StockFavouriteDAO {
     fun deleteStock(stock: StockFavourite)
 
     @Query("SELECT * FROM favourite_stock_database")
-    fun getAll(): Observable<List<StockFavourite>>
+    override fun getAll(): List<StockFavourite>
 
     /*@Query("SELECT * FROM favourite_stock_database WHERE id = :id")
     fun getId(id: Int): Observable<StockBought?>*/

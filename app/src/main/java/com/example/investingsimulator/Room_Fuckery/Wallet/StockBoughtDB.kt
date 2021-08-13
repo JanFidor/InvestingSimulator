@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 
 @Database(entities = [StockBought::class], version = 0)
 abstract class StockBoughtDB : RoomDatabase() {
-    abstract val stockStockBoughtDAO: StockBoughtDAO
+    abstract val stockDAO: StockBoughtDAO
 
     companion object {
 
