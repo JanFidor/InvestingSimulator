@@ -17,6 +17,10 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    buildFeatures {
+        dataBinding true
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -34,8 +38,8 @@ android {
 
 dependencies {
     def room_version = "2.3.0"
-    def nav_version = "2.3.1"
-    def lifecycle_version = "2.2.0"
+    def nav_version = "2.3.5"
+    def lifecycle_version = "2.3.1"
     def RxKotlin = "3.0.1"
     def RxAndroid = "3.0.0"
     def Retrofit = "2.9.0"
