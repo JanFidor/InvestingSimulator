@@ -4,7 +4,7 @@ import androidx.room.*
 import com.example.investingsimulator.Room_Fuckery.Wallet.StockBought
 
 @Dao
-interface StockDAO<T> {
+interface RoomDAO<T> {
     @Insert
     fun insert(stock: T)
 
