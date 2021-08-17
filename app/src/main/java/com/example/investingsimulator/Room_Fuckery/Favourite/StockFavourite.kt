@@ -2,13 +2,11 @@ package com.example.investingsimulator.Room_Fuckery.Favourite
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.investingsimulator.Room_Fuckery.Templates.Stock
+import com.example.investingsimulator.Room_Fuckery.templates.Stock
 
 @Entity(tableName = "favourite_stock_database")
-data class StockFavourite(
+open class StockFavourite(
+    @PrimaryKey(autoGenerate = false)
     val symbol: String,
-    var cost: Int,
-) : Stock(){
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0
-}
+    var price: Double,
+    ) : Stock()

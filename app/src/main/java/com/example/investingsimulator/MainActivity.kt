@@ -7,11 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import com.example.investingsimulator.API_Fuckery.MarketHistoryMultiple
 import com.example.investingsimulator.API_Fuckery.MarketHistorySingle
 import com.example.investingsimulator.API_Fuckery.QuoteDataWrapper
 import com.example.investingsimulator.API_Fuckery.RetrofitInstance
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import retrofit2.Call
+import retrofit2.Callback
 import retrofit2.Response
 
 // passing layout id as param is a BITCH
@@ -30,7 +32,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         val stocks = "AAPL"
 
-        val call1 = RetrofitInstance.InterfaceAPI.getCurrent(stocks)
+        /*val call1 = RetrofitInstance.InterfaceAPI.getCurrent(stocks)
         call1.enqueue(object : retrofit2.Callback<QuoteDataWrapper>{
             override fun onFailure(call: Call<QuoteDataWrapper>, t: Throwable?) {
                 Log.e("api", t?.message ?: "No message")
@@ -46,7 +48,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val start = "2021-08-10"
         val end = "2021-08-10"
         val call2 = RetrofitInstance.InterfaceAPI.getShortHistory(stocks, start, end)
-        call2.enqueue(object : retrofit2.Callback<MarketHistorySingle> {
+        call2.enqueue(object : Callback<MarketHistorySingle> {
             override fun onFailure(call: Call<MarketHistorySingle>, t: Throwable?) {
                 Log.e("api", t?.message ?: "No message")
             }
@@ -58,6 +60,26 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
             }
         })
+
+        val end2 = "2021-08-12"
+        val call3 = RetrofitInstance.InterfaceAPI.getLongHistory(stocks, start, end2)
+        call3.enqueue(object : Callback<MarketHistoryMultiple> {
+            override fun onFailure(call: Call<MarketHistoryMultiple>, t: Throwable?) {
+                Log.e("api", t?.message ?: "No message")
+            }
+
+            override fun onResponse(call: Call<MarketHistoryMultiple>, response: Response<MarketHistoryMultiple>?) {
+                response?.let {
+                    if (response.isSuccessful) Log.d("api", response.body().toString())
+                }
+
+            }
+        })
+*/
+
+
+
+
     }
 
 }
