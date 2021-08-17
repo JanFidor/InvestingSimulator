@@ -20,7 +20,7 @@ interface StockBoughtDAO : StockDAO<StockBought>{
     fun updateStock(stock: StockBought)*/
 
     @Query("SELECT * FROM bought_stock_database")
-    fun getAll(): List<StockBought>
+    override fun getAll(): List<StockBought>
 
     /*@Query("SELECT * FROM bought_stock_database WHERE id = :id")
     fun getId(id: Int): Observable<StockBought?>*/

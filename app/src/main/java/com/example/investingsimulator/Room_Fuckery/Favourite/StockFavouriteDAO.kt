@@ -12,5 +12,5 @@ import com.example.investingsimulator.Room_Fuckery.templates.StockDAO
 interface StockFavouriteDAO : StockDAO<StockFavourite> {
 
     @Query("SELECT * FROM favourite_stock_database")
-    fun getAll(): List<StockFavourite>
+    override fun getAll(): List<StockFavourite>
 }

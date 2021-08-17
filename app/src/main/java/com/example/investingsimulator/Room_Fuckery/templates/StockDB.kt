@@ -9,7 +9,7 @@ import com.example.investingsimulator.Room_Fuckery.Favourite.StockFavouriteDAO
 import com.example.investingsimulator.Room_Fuckery.Wallet.StockBought
 import com.example.investingsimulator.Room_Fuckery.Wallet.StockBoughtDAO
 
-@Database(entities = [StockBought::class, StockFavourite::class], version = 2, exportSchema = false)
+@Database(entities = [StockBought::class, StockFavourite::class, Stock::class], version = 3, exportSchema = false)
 abstract class StockDB : RoomDatabase() {
     abstract val stockBoughtDAO: StockBoughtDAO
     abstract val stockFavouriteDAO: StockFavouriteDAO

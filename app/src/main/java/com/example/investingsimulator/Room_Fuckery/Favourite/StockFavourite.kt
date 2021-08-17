@@ -5,8 +5,8 @@ import androidx.room.PrimaryKey
 import com.example.investingsimulator.Room_Fuckery.templates.Stock
 
 @Entity(tableName = "favourite_stock_database")
-open class StockFavourite(
+data class StockFavourite(
     @PrimaryKey(autoGenerate = false)
-    val symbol: String,
+    override val symbol : String,
     var price: Double,
-    ) : Stock()
+    ) : Stock(symbol)

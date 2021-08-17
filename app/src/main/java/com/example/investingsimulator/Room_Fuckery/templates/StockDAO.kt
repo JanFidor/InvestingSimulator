@@ -17,5 +17,6 @@ interface StockDAO<T> {
     @Update
     fun update(stock : T)
 
-    //fun getAll(): List<Stock>
+
+    fun getAll(): List<T>
 }
