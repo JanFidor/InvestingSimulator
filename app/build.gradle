@@ -45,6 +45,8 @@ dependencies {
     def Retrofit = "2.9.0"
     def Gson = "2.3.0"
     def OkHttp = "4.9.1"
+    def kotlinStatistics = "1.2.1"
+    def SNAP = "0e62ce9f1f"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation 'androidx.core:core-ktx:1.6.0'
@@ -86,6 +88,12 @@ dependencies {
     // OkHttpInterceptor -> headers
     implementation("com.squareup.okhttp3:logging-interceptor:$OkHttp")
 
+    // Kotlin statistics
+    implementation  "org.nield:kotlin-statistics:$kotlinStatistics"
+    
+    
+    //candle stick graph 
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 
 }
