@@ -5,9 +5,9 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.investingsimulator.Room_Fuckery.Wallet.StockBoughtRoom
-import com.example.investingsimulator.Room_Fuckery.Wallet.StockBoughtDAO
-import com.example.investingsimulator.Room_Fuckery.templates.StockDB
+import com.example.investingsimulator.room.bought.StockBoughtRoom
+import com.example.investingsimulator.room.bought.StockBoughtDAO
+import com.example.investingsimulator.room.templates.StockDB
 import org.hamcrest.CoreMatchers.equalTo
 import org.junit.After
 import org.junit.Before

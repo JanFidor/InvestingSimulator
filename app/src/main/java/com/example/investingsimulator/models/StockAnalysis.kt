@@ -1,6 +1,6 @@
 package com.example.investingsimulator.models
 
-import com.example.investingsimulator.API_Fuckery.DayData
+import com.example.investingsimulator.retrofit.DayData
 import com.github.mikephil.charting.data.CandleEntry
 import org.nield.kotlinstatistics.standardDeviation
 import kotlin.math.abs

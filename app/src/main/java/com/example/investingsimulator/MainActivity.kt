@@ -7,8 +7,13 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import com.example.investingsimulator.models.DateIntervals
+import com.example.investingsimulator.retrofit.QuoteDataWrapper
+import com.example.investingsimulator.retrofit.RetrofitInstance
+import com.example.investingsimulator.retrofit.SymbolWrapper2
+import com.example.investingsimulator.retrofit.SymbolsWrapper2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import retrofit2.Call
+import retrofit2.Response
 
 // passing layout id as param is a BITCH
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -28,8 +33,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             findViewById<BottomNavigationView>(R.id.bottom_navigation)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
 
-        val stocks = "AAPL"
-        /*val call1 = RetrofitInstance.InterfaceAPI.getCurrent(stocks)
+        /*val stocks = "AAPL"
+        val call1 = RetrofitInstance.InterfaceAPI.getCurrent(stocks)
         call1.enqueue(object : retrofit2.Callback<QuoteDataWrapper>{
             override fun onFailure(call: Call<QuoteDataWrapper>, t: Throwable?) {
                 Log.e("api", t?.message ?: "No message")
@@ -72,11 +77,36 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 }
 
             }
-        })*/
+        })
 
 
-        }
+        val call2 = RetrofitInstance.InterfaceAPI.getSymbols("googl")
+        call2.enqueue(object : retrofit2.Callback<SymbolsWrapper2>{
+            override fun onFailure(call: Call<SymbolsWrapper2>, t: Throwable?) {
+                Log.e("api", t?.message ?: "No message")
+            }
 
+            override fun onResponse(call: Call<SymbolsWrapper2>, response: Response<SymbolsWrapper2>?) {
+                response?.let {
+                    if (response.isSuccessful) Log.d("api", response.body().toString())
+                }
+            }
+        })
+
+        val call3 = RetrofitInstance.InterfaceAPI.getSymbol("aapl")
+        call3.enqueue(object : retrofit2.Callback<SymbolWrapper2>{
+            override fun onFailure(call: Call<SymbolWrapper2>, t: Throwable?) {
+                Log.e("api", t?.message ?: "No message")
+            }
+
+            override fun onResponse(call: Call<SymbolWrapper2>, response: Response<SymbolWrapper2>?) {
+                response?.let {
+                    if (response.isSuccessful) Log.d("api", response.body().toString())
+                }
+            }
+        })
+        */
+    }
 
 
     override fun onSupportNavigateUp(): Boolean {

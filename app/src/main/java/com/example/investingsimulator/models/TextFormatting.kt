@@ -3,9 +3,8 @@ package com.example.investingsimulator.models
 import android.graphics.Color
 
 object TextFormatting {
-
+    @JvmStatic
     fun getPercentColor(change: Double): Int {
-
         return when {
             change < 0.0 -> Color.RED
             change == 0.0 -> Color.BLUE
@@ -13,6 +12,8 @@ object TextFormatting {
             else -> 0
         }
     }
+
+    @JvmStatic
     fun getPercentText(change: Double):String{
         val percent = ((change - 1) * 100)
 

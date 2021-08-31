@@ -7,11 +7,9 @@
 
         <variable
             name="stockHolder"
-            type="com.example.investingsimulator.Screens.StockListAdapter.StockHolder" />
+            type="com.example.investingsimulator.screens.StockListAdapter.StockHolder" />
 
-        <variable
-            name="decorator"
-            type="com.example.investingsimulator.models.TextFormatting" />
+        <import type="com.example.investingsimulator.models.TextFormatting"/>
     </data>
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,9 +50,11 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
             android:layout_alignParentEnd="true"
-            android:text="@{stockData.change}"
-            android:textColor="@{decorator.getPercentColor(stockData.change)}"
+            android:text="@{TextFormatting.getPercentText(stockData.change)}"
+            android:textColor="@{TextFormatting.getPercentColor(stockData.change)}"
             />
+
+
 
     </RelativeLayout>
 </layout>

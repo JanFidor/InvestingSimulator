@@ -1,20 +1,27 @@
 package com.example.investingsimulator.models.stockModel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.API_Fuckery.MarketHistoryMultiple
-import com.example.investingsimulator.API_Fuckery.QuoteDataWrapper
-import com.example.investingsimulator.API_Fuckery.RetrofitInstance
-import com.example.investingsimulator.Room_Fuckery.templates.StockTemplateRoom
+import com.example.investingsimulator.retrofit.MarketHistoryMultiple
+import com.example.investingsimulator.retrofit.QuoteDataWrapper
+import com.example.investingsimulator.retrofit.RetrofitInstance
+import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.models.DateIntervals
 import com.example.investingsimulator.models.StockAnalysis
 import com.example.investingsimulator.models.TextFormatting
 import retrofit2.Response
 
-abstract class StockTemplate(open val stockData: StockTemplateRoom){
-    val change = MutableLiveData("")
+open class StockTemplate(open val stockData: StockTemplateRoom){
+
+    val _change = MutableLiveData(0.0)
+    val change: LiveData<Double>
+        get() = _change
+
     val fullName = MutableLiveData("")
-    abstract val isSellable: Boolean
+
+
+    open val isSellable: Boolean = false
 
     init {
         val call = RetrofitInstance.InterfaceAPI.getCurrent(stockData.symbol)
@@ -27,7 +34,7 @@ abstract class StockTemplate(open val stockData: StockTemplateRoom){
                 response?.let {
                     if (response.isSuccessful) {
                         val data = response.body()?.quotes?.quote
-                        change.value = TextFormatting.getPercentText(data?.change_percentage ?: 0.0)
+                        _change.value = data?.change_percentage ?: 0.0
                         fullName.value = data?.description ?: ""
                     }
                 }
@@ -61,4 +68,14 @@ abstract class StockTemplate(open val stockData: StockTemplateRoom){
 
 
     // TODO Make factory for single and a list
+    companion object{
+        fun create(stockData: StockTemplateRoom): StockTemplate{
+            return StockTemplate(stockData)
+        }
+
+        fun create(stockData: List<StockTemplateRoom>): List<StockTemplate>{
+            return stockData.map{StockTemplate(it)}
+        }
+
+    }
 }
