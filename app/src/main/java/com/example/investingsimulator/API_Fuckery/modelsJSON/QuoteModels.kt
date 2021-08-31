@@ -14,7 +14,7 @@ data class Quote(
     @field:SerializedName("symbol") var symbol: String,
     @field:SerializedName("description") var description: String,
     @field:SerializedName("exch") var exch: String,
-    @field:SerializedName("type") var type: String,
-    @field:SerializedName("last") var last: String,
-    @field:SerializedName("change_percentage") var change_percentage: String,
+    /*@field:SerializedName("type") var type: String,*/
+    @field:SerializedName("last") var last: Double,
+    @field:SerializedName("change_percentage") var change_percentage: Double,
 )

@@ -5,7 +5,7 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.example.investingsimulator.Room_Fuckery.Wallet.StockBought
+import com.example.investingsimulator.Room_Fuckery.Wallet.StockBoughtRoom
 import com.example.investingsimulator.Room_Fuckery.Wallet.StockBoughtDAO
 import com.example.investingsimulator.Room_Fuckery.templates.StockDB
 import org.hamcrest.CoreMatchers.equalTo
@@ -51,14 +51,14 @@ class SimpleEntityReadWriteTest {
 }
 
 object StockBlock{
-    val list = mutableListOf<StockBought>()
+    val list = mutableListOf<StockBoughtRoom>()
 
     init {
-        list.add(StockBought("A", 5.243, 8.461, 6.014))
-        list.add(StockBought("B", 5.2, 3.1, 4.5))
-        list.add(StockBought("C", 1.09, 2.09, 3.09))
-        list.add(StockBought("D", 6.0, 4.98, 0.002))
-        list.add(StockBought("E", 257.568, 1.0, 2.0))
+        list.add(StockBoughtRoom("A", 5.243, 8.461))
+        list.add(StockBoughtRoom("B", 5.2, 3.1))
+        list.add(StockBoughtRoom("C", 1.09, 2.09))
+        list.add(StockBoughtRoom("D", 6.0, 4.98))
+        list.add(StockBoughtRoom("E", 257.568, 1.0))
     }
 
 

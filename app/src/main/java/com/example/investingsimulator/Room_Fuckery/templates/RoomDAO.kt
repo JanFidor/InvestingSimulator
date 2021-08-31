@@ -1,7 +1,6 @@
 package com.example.investingsimulator.Room_Fuckery.templates
 
 import androidx.room.*
-import com.example.investingsimulator.Room_Fuckery.Wallet.StockBought
 
 @Dao
 interface RoomDAO<T> {

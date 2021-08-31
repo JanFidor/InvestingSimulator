@@ -7,16 +7,19 @@
 
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.example.investingsimulator.Screens.WalletFragment"
-        tools:layout="@layout/fragment_wallet"/>
+        android:name="com.example.investingsimulator.Screens.Fragments.WalletFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_wallet" />
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.investingsimulator.Screens.SearchFragment"
-        tools:layout="@layout/fragment_search"/>
+        android:name="com.example.investingsimulator.Screens.Fragments.SearchFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_search" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.investingsimulator.Screens.SettingsFragment"
-        tools:layout="@layout/fragment_settings"/>
+        android:name="com.example.investingsimulator.Screens.Fragments.SettingsFragment"
+        android:label="@string/AAPL"
+        tools:layout="@layout/fragment_settings" />
 
 </navigation>

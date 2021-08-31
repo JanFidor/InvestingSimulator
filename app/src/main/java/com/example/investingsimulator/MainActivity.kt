@@ -4,34 +4,31 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
-import com.example.investingsimulator.API_Fuckery.MarketHistoryMultiple
-import com.example.investingsimulator.API_Fuckery.MarketHistorySingle
-import com.example.investingsimulator.API_Fuckery.QuoteDataWrapper
-import com.example.investingsimulator.API_Fuckery.RetrofitInstance
+import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.example.investingsimulator.models.DateIntervals
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 // passing layout id as param is a BITCH
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
+    lateinit var navController: NavController
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        navController = navHostFragment.navController
+
+        setupActionBarWithNavController(this, navController)
 
         val bottomNavigationView =
             findViewById<BottomNavigationView>(R.id.bottom_navigation)
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
 
         val stocks = "AAPL"
-
         /*val call1 = RetrofitInstance.InterfaceAPI.getCurrent(stocks)
         call1.enqueue(object : retrofit2.Callback<QuoteDataWrapper>{
             override fun onFailure(call: Call<QuoteDataWrapper>, t: Throwable?) {
@@ -61,7 +58,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         })
 
-        val end2 = "2021-08-12"
+        val start = "2021-08-27"
+        val end2 = "2021-08-27"
         val call3 = RetrofitInstance.InterfaceAPI.getLongHistory(stocks, start, end2)
         call3.enqueue(object : Callback<MarketHistoryMultiple> {
             override fun onFailure(call: Call<MarketHistoryMultiple>, t: Throwable?) {
@@ -74,12 +72,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 }
 
             }
-        })
-*/
+        })*/
+
+
+        }
 
 
 
-
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
 }

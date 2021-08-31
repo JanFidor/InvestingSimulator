@@ -6,7 +6,7 @@ import com.example.investingsimulator.Room_Fuckery.templates.RoomDAO
 
 
 @Dao
-interface StockBoughtDAO : RoomDAO<StockBought>{
+interface StockBoughtDAO : RoomDAO<StockBoughtRoom>{
     @Query("SELECT * FROM bought_stock_database")
-    override fun getAll(): List<StockBought>
+    override fun getAll(): List<StockBoughtRoom>
 }

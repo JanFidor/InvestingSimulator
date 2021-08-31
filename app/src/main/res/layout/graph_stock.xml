@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="dataSet"
+            type="com.example.investingsimulator.models.StockAnalysis" />
+    </data>
+    <com.github.mikephil.charting.charts.CandleStickChart
+        android:id="@+id/candle_stick_chart"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        android:layout_marginHorizontal="10dp"
+
+        android:dataSet="@{dataSet}"
+        />
+</layout>

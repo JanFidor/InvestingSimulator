@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="dataSet"
+            type="com.example.investingsimulator.models.StockAnalysis" />
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp">
+        <TextView
+            android:id="@+id/text_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Price"
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/text_volume"
+            app:layout_constraintEnd_toStartOf="@+id/text_increase"
+            />
+
+        <TextView
+            android:id="@+id/text_increase"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Increase"
+
+
+            app:layout_constraintTop_toTopOf="@id/text_price"
+            app:layout_constraintStart_toEndOf="@+id/text_price"
+            app:layout_constraintBottom_toTopOf="@id/text_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+
+        <TextView
+            android:id="@+id/text_volume"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Volume"
+
+            app:layout_constraintTop_toBottomOf="@id/text_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/button_trade"
+            app:layout_constraintEnd_toStartOf="@+id/text_date"
+            />
+
+        <TextView
+            android:id="@+id/text_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:text="Date"
+
+
+            app:layout_constraintTop_toBottomOf="@id/text_increase"
+            app:layout_constraintStart_toEndOf="@+id/text_volume"
+            app:layout_constraintBottom_toTopOf="@id/button_trade"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <Button
+            android:id="@+id/button_trade"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:text="Trade"
+
+
+            app:layout_constraintTop_toBottomOf="@+id/text_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

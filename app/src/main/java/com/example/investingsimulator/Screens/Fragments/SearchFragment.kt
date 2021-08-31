@@ -1,4 +1,4 @@
-package com.example.investingsimulator.Screens
+package com.example.investingsimulator.Screens.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater

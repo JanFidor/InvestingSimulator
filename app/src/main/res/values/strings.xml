@@ -6,4 +6,10 @@
     <string name="bottom_bar_wallet">Wallet</string>
     <string name="bottom_bar_search">Search</string>
     <string name="bottom_bar_settings">Settings</string>
+
+
+    <string name="AAPL">AAPL</string>
+
+
+
 </resources>

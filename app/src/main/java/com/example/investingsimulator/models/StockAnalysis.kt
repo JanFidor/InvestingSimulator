@@ -1,30 +1,35 @@
 package com.example.investingsimulator.models
 
-import com.example.investingsimulator.API_Fuckery.modelsJSON.DayData
+import com.example.investingsimulator.API_Fuckery.DayData
 import com.github.mikephil.charting.data.CandleEntry
-import org.nield.kotlinstatistics.median
 import org.nield.kotlinstatistics.standardDeviation
-import org.nield.kotlinstatistics.standardDeviationBy
 import kotlin.math.abs
 import kotlin.math.round
 
-class StockAnalysis private constructor(history: Array<DayData>) {
+class StockAnalysis(history: Array<DayData>) {
     var volatility: List<String>
     var deviation: Double
     val candleData: MutableList<CandleEntry> = mutableListOf()
+    val dateData: List<String> = history.map{it.date.slice(5..9)}
+    val volumeData: List<Long> = history.map{it.volume}
+
     var averageDelta: Float
     var dailyVolatility: Float
 
+
+
     init {
-        var index = 0.0F
         history
-            .map{
-                CandleEntry(index, it.high.toFloat(), it.low.toFloat(), it.open.toFloat(), it.close.toFloat())
-            }
-            .forEach{
-                candleData.add(it)
-                index += 1.0F
-            }
+        .mapIndexed { index, dayData ->
+            CandleEntry(
+                index.toFloat(),
+                dayData.high.toFloat(), dayData.low.toFloat(),
+                dayData.open.toFloat(), dayData.close.toFloat()
+            )
+        }
+        .forEach{
+            candleData.add(it)
+        }
 
         val averagePrice = candleData.map{(it.open + it.close) / 2}
         deviation = averagePrice.standardDeviation()
@@ -44,9 +49,9 @@ class StockAnalysis private constructor(history: Array<DayData>) {
     }
 
     companion object{
-        fun factory(history: Array<DayData>): StockAnalysis{
-            return StockAnalysis(history)
-        }
+        /*fun factory(history: Array<DayData>, stocks: String): StockAnalysis{
+            return StockAnalysis(history, stocks)
+        }*/
     }
 
 
