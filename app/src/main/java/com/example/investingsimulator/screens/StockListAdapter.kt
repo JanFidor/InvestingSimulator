@@ -35,20 +35,10 @@ class StockListAdapter(
         private val a: FragmentActivity
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun getPercentColor(change: Double): Int {
-            return when {
-                change < 0.0 -> Color.RED
-                change == 0.0 -> Color.BLUE
-                change > 0.0 -> Color.GREEN
-                else -> 0
-            }
-        }
-
         fun bind(stock: StockTemplate) {
             with(binding){
                 stockData = stock
                 stockHolder = this@StockHolder
-                /*decorator = TextFormatting*/
             }
         }
 

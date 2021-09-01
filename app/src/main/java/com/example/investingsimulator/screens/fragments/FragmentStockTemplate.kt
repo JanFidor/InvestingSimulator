@@ -7,34 +7,29 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.investingsimulator.databinding.FragmentStockListBinding
 import com.example.investingsimulator.screens.StockListAdapter
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
-import com.example.investingsimulator.databinding.FragmentSearchBinding
+import com.example.investingsimulator.room.templates.StockTemplateRoom
 
-class RecyclerViewFragmentTemplate :  Fragment() {
-    private lateinit var binding: FragmentSearchBinding
-
-    private val viewModel: ViewModelTemplate by activityViewModels()
-    private val fragment = this
+abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
+    private lateinit var binding: FragmentStockListBinding
+    protected open val viewModel: ViewModelTemplate<T> by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle? ): View {
 
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding = FragmentStockListBinding.inflate(inflater, container, false)
 
-        binding.apply {
-            lifecycleOwner = viewLifecycleOwner
-            /*viewModel = viewModel
-            recipeFragment = fragment*/
-        }
-
+        binding.lifecycleOwner = viewLifecycleOwner
+        binding.viewModel = viewModel
+        binding.fragment = this
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
         val adapter = StockListAdapter(viewModel.stockVisible.value ?: listOf(), requireActivity())
@@ -43,6 +38,8 @@ class RecyclerViewFragmentTemplate :  Fragment() {
         viewModel.stockVisible.observe(viewLifecycleOwner) {recipes ->
             adapter.reload(recipes ?: listOf())
         }
+
+        viewModel.searched.observe(viewLifecycleOwner, {viewModel.updateSearch()})
 
     }
 }

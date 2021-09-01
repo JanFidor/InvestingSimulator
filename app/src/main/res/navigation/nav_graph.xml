@@ -13,12 +13,12 @@
 
     <fragment
         android:id="@+id/searchFragment"
-        android:name="com.example.investingsimulator.screens.fragments.SearchFragment"
+        android:name="com.example.investingsimulator.screens.fragments.FragmentStockFavourite"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_stock_list" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.investingsimulator.screens.fragments.SettingsFragment"
+        android:name="com.example.investingsimulator.screens.fragments.FragmentStockBought"
         android:label="@string/AAPL"
         tools:layout="@layout/fragment_settings" />
 

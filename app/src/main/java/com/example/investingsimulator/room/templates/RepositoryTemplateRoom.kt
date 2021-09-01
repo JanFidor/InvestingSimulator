@@ -8,9 +8,9 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-open class RoomRepository<T>(application: Application) {
-    val db = StockDB.getInstance(application)
-    open val stockDao: RoomDAO<T>? = null
+open class RepositoryTemplateRoom<T>(application: Application) {
+    private val db = StockDB.getInstance(application)
+    protected open val stockDao: RoomDAO<T>? = null
     private val _allStock =  MutableLiveData<List<T>> ()
 
     init{

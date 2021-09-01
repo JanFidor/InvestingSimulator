@@ -1,5 +1,6 @@
 package com.example.investingsimulator.retrofit
 
+import android.database.Observable
 import android.util.Log
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -41,24 +42,53 @@ object RetrofitInstance {
     val InterfaceAPI: TestRetrofit = retrofit.create(TestRetrofit::class.java)
 
 
-    fun getCurrent(symbols: String): Call<QuoteDataWrapper>{
-        return InterfaceAPI.getCurrent(symbols)
+    fun getCurrent(symbol: String): Quote?{
+        var data: Quote? = null
+        val call = InterfaceAPI.getCurrent(symbol)
+        call.enqueue(object : retrofit2.Callback<QuoteDataWrapper> {
+            override fun onFailure(call: Call<QuoteDataWrapper>, t: Throwable?) {
+                Log.e("api", t?.message ?: "No message")
+            }
+
+            override fun onResponse(
+                call: Call<QuoteDataWrapper>,
+                response: Response<QuoteDataWrapper>?
+            ){
+                response?.let {
+                    if (response.isSuccessful) data = response.body()?.quotes?.quote
+                }
+            }
+        })
+
+        return data
     }
 
-    /*fun getHistory(symbols: String, start: String, end: String,): ManagerClass{
-        val stockData = ManagerClass(InterfaceAPI.getHistory(symbols, start, end))
-        return stockData
-    }
+    fun getHistory(symbol: String, start: String, end: String,): Array<DayData>{
+        var list: Array<DayData> = arrayOf()
+        val call = InterfaceAPI.getLongHistory(symbol, start, end)
+        call.enqueue(object : retrofit2.Callback<MarketHistoryMultiple> {
+            override fun onFailure(call: Call<MarketHistoryMultiple>, t: Throwable?) {
+                Log.e("api", t?.message ?: "No message")
+            }
 
-    fun getLongHistory(symbols: String, start: String, end: String,): Call<MarketHistoryMultiple>{
-        return InterfaceAPI.getShortHistory(symbols, start, end)
-    }*/
+            override fun onResponse(
+                call: Call<MarketHistoryMultiple>,
+                response: Response<MarketHistoryMultiple>?
+            ){
+                response?.let {
+                    if (response.isSuccessful) list = response.body()?.data ?: arrayOf()
+                }
+            }
+        })
+
+        return list
+    }
 
     fun getSearchedStocks(search: String): Array<String>{
         var list: Array<String> = arrayOf()
 
         try {
-            val call1 = InterfaceAPI.getSymbols("googl")
+            val call1 = InterfaceAPI.getSymbols(search)
             call1.enqueue(object : retrofit2.Callback<SymbolsWrapper2> {
                 override fun onFailure(call: Call<SymbolsWrapper2>, t: Throwable?) {
                     Log.e("api", t?.message ?: "No message")
@@ -75,7 +105,7 @@ object RetrofitInstance {
             })
         }
         catch (e : IllegalStateException){
-            val call2 = InterfaceAPI.getSymbol("aapl")
+            val call2 = InterfaceAPI.getSymbol(search)
             call2.enqueue(object : retrofit2.Callback<SymbolWrapper2>{
                 override fun onFailure(call: Call<SymbolWrapper2>, t: Throwable?) {
                     Log.e("api", t?.message ?: "No message")
@@ -90,5 +120,4 @@ object RetrofitInstance {
         }
         return list
     }
-
 }
