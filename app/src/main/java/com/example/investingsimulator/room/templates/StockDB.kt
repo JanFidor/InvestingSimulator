@@ -29,6 +29,7 @@ abstract class StockDB : RoomDatabase() {
                         StockDB::class.java,
                         "stock_db"
                     )
+                        .allowMainThreadQueries()
                         .fallbackToDestructiveMigration()
                         .build()
                     INSTANCE = instance

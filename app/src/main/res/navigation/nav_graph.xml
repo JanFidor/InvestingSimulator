@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/searchFragment">
+    app:startDestination="@id/settingsFragment">
 
     <fragment
         android:id="@+id/walletFragment"
-        android:name="com.example.investingsimulator.screens.fragments.WalletFragment"
+        android:name="com.example.investingsimulator.screens.fragments.FragmentStockBought"
         android:label="@string/app_name"
         tools:layout="@layout/fragment_wallet" />
 
@@ -18,7 +18,7 @@
         tools:layout="@layout/fragment_stock_list" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.investingsimulator.screens.fragments.FragmentStockBought"
+        android:name="com.example.investingsimulator.screens.fragments.WalletFragment"
         android:label="@string/AAPL"
         tools:layout="@layout/fragment_settings" />
 

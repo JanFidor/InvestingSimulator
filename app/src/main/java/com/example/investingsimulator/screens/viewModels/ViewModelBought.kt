@@ -1,7 +1,11 @@
 package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
+import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.retrofit.RetrofitInstance
 import com.example.investingsimulator.room.bought.RepositoryBoughtRoom
 import com.example.investingsimulator.room.bought.StockBoughtRoom
@@ -16,4 +20,7 @@ import java.util.concurrent.TimeUnit
 
 class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtRoom>(application) {
     override val _repository = RepositoryBoughtRoom(application)
+    /*override val stockAll: MutableLiveData<List<StockTemplate>> =
+        MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
+
 }

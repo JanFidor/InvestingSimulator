@@ -7,5 +7,5 @@ class StockFavourite (stockData: StockTemplateRoom): StockTemplate(stockData) {
     override val isSellable: Boolean
         get() = false
 
-    override val stockData = stockData as StockFavouriteRoom
+    /*override val stockData = stockData as StockFavouriteRoom*/
 }

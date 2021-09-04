@@ -1,9 +1,11 @@
 package com.example.investingsimulator.screens.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,7 +41,22 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
             adapter.reload(recipes ?: listOf())
         }
 
-        viewModel.searched.observe(viewLifecycleOwner, {viewModel.updateSearch()})
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
-    }
+            override fun onQueryTextChange(newText: String): Boolean {
+                viewModel.searched.value = newText
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String): Boolean {
+                viewModel.searched.value = query
+                return false
+            }
+
+        })
+
+        viewModel.searched.observe(viewLifecycleOwner, {viewModel.updateSearch()})
+        viewModel.stockVisible.observe(viewLifecycleOwner, {adapter.reload(viewModel.stockVisible.value ?: listOf())})
+
+        }
 }

@@ -8,25 +8,24 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
-open class RepositoryTemplateRoom<T>(application: Application) {
-    private val db = StockDB.getInstance(application)
+open class RepositoryTemplateRoom<T : StockTemplateRoom>(application: Application) {
+    protected val db = StockDB.getInstance(application)
     protected open val stockDao: RoomDAO<T>? = null
-    private val _allStock =  MutableLiveData<List<T>> ()
 
     init{
-        Observable
+
+        /*Observable
             .fromSingle<List<T>> {stockDao?.getAll()}
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({obj -> _allStock.value = obj}, {e -> Log.e("Room",
-                "Asynchronous call, BoughtStock getAll() \n ${e.message}")})
+                "Asynchronous call, BoughtStock getAll() \n ${e.message}")})*/
     }
-
-    val allStock: LiveData<List<T>>
-        get() =_allStock
 
     fun create(obj: T) = stockDao?.insert(obj)
     fun delete(obj: T) = stockDao?.delete(obj)
     fun update(obj: T) = stockDao?.update(obj)
+
+    fun getAll(): List<T> = stockDao?.getAll() ?: listOf()
 
 }

@@ -7,7 +7,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
-import com.example.investingsimulator.retrofit.QuoteDataWrapper
 import com.example.investingsimulator.retrofit.RetrofitInstance
 import com.example.investingsimulator.retrofit.SymbolWrapper2
 import com.example.investingsimulator.retrofit.SymbolsWrapper2

@@ -1,11 +1,15 @@
 package com.example.investingsimulator.screens.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.investingsimulator.databinding.FragmentSettingsBinding
 import com.example.investingsimulator.databinding.FragmentWalletBinding
+import com.example.investingsimulator.models.stockModel.StockFavourite
+import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 
 class WalletFragment :  Fragment() {
     override fun onCreateView(
@@ -13,15 +17,11 @@ class WalletFragment :  Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = FragmentWalletBinding.inflate(inflater, container, false)
+        val binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        binding.apply{
+            stock = StockFavourite(StockFavouriteRoom("AAPL", "Apple"))
+            Log.d("check", "1")
+        }
         return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
     }
 }

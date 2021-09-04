@@ -5,9 +5,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <variable
+        <!--<variable
             name="dataSet"
             type="com.example.investingsimulator.models.StockAnalysis" />
+-->
+        <variable
+            name="stock"
+            type="com.example.investingsimulator.models.stockModel.StockFavourite" />
     </data>
 
 <RelativeLayout
@@ -18,11 +22,11 @@
 
     <include layout="@layout/graph_stock"
         android:id="@+id/graph"
-        app:dataSet="@{dataSet}"/>
+        app:dataSet="@{stock.data}"/>
 
     <include layout="@layout/data_stock"
         android:id="@+id/details"
-        app:dataSet="@{dataSet}"
+        app:dataSet="@{stock.data}"
         android:layout_below="@id/graph"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

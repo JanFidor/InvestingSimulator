@@ -1,17 +1,18 @@
 package com.example.investingsimulator.models
 
+import android.util.Log
 import com.example.investingsimulator.retrofit.DayData
 import com.github.mikephil.charting.data.CandleEntry
 import org.nield.kotlinstatistics.standardDeviation
 import kotlin.math.abs
 import kotlin.math.round
 
-class StockAnalysis(history: Array<DayData>) {
+class StockAnalysis(history: List<DayData>?) {
     var volatility: List<String>
     var deviation: Double
     val candleData: MutableList<CandleEntry> = mutableListOf()
-    val dateData: List<String> = history.map{it.date.slice(5..9)}
-    val volumeData: List<Long> = history.map{it.volume}
+    val dateData: List<String> = history?.map{it.date.slice(5..9)} ?: listOf()
+    val volumeData: List<Long> = history?.map{it.volume} ?: listOf()
 
     var averageDelta: Float
     var dailyVolatility: Float
@@ -19,18 +20,19 @@ class StockAnalysis(history: Array<DayData>) {
 
 
     init {
+        Log.d("check", "3")
         history
-        .mapIndexed { index, dayData ->
+        ?.mapIndexed { index, dayData ->
             CandleEntry(
                 index.toFloat(),
                 dayData.high.toFloat(), dayData.low.toFloat(),
                 dayData.open.toFloat(), dayData.close.toFloat()
             )
         }
-        .forEach{
+        ?.forEach{
             candleData.add(it)
         }
-
+        Log.d("check", "5 $history")
         val averagePrice = candleData.map{(it.open + it.close) / 2}
         deviation = averagePrice.standardDeviation()
         val mean = averagePrice.average()
@@ -42,10 +44,12 @@ class StockAnalysis(history: Array<DayData>) {
                 }
             }
         }
-        volatility = devs.map{"${round(it/history.size * 100)}%"}
+        Log.d("check", "6")
+        volatility = devs.map{"${round(it/(history?.size ?: 1) * 100)}%"}
 
         averageDelta = candleData.map {abs(it.open - it.close) / (it.open + it.close)}.sum() / candleData.size
         dailyVolatility = candleData.map {it.high - it.low / (it.open + it.close)}.sum() / candleData.size
+        Log.d("check", "7")
     }
 
     companion object{
