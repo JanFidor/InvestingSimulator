@@ -15,19 +15,19 @@ abstract class ViewModelTemplate<T : StockTemplateRoom>(application: Application
 
     protected open val _repository by lazy {RepositoryTemplateRoom<T>(application)}
 
-    protected open val stockAll: MutableLiveData<List<StockTemplate>> by lazy { MutableLiveData(_repository.getAll().map{ StockTemplate(it) })}
-    protected val _stockVisible: MutableLiveData<List<StockTemplate>> by lazy { MutableLiveData(stockAll.value)}
+    private val stockAll: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(_repository.getAll().map{ StockTemplate(it) })}
+    protected val _stockVisible: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(stockAll.value)}
     val stockVisible: LiveData<List<StockTemplate>>
         get() = _stockVisible
 
-    val searched: MutableLiveData<String> = MutableLiveData("")
+    protected var searched: String = ""
 
     protected open fun filterStock() {
-        Log.d("search", "searching")
-        _stockVisible.value = stockAll.value?.filter {
-            it.symbol.length >= (searched.value?.length ?: 0) &&
-                    it.symbol.slice(searched.value?.indices ?: 0..0)  == searched.value
-        }
+        Log.d("search", "filtering from database")
+        _stockVisible.postValue(stockAll.value?.filter {
+            it.symbol.length >= (searched.length) &&
+                    it.symbol.slice(searched.indices)  == searched
+        })
     }
 
     fun add(stock: T) {
@@ -38,7 +38,8 @@ abstract class ViewModelTemplate<T : StockTemplateRoom>(application: Application
         _repository.delete(stock)
         filterStock()
     }
-    fun updateSearch(){
+    fun updateSearch(query: String){
+        searched = query
         filterStock()
     }
 }

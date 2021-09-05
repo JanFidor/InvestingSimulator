@@ -15,12 +15,11 @@ object TextFormatting {
 
     @JvmStatic
     fun getPercentText(change: Double):String{
-        val percent = ((change - 1) * 100)
 
-        val s = "${"%.2f".format(percent)}%"
+        val s = "${"%.2f".format(change)}%"
         return when {
-            change < 0.0 -> "-$s"
-            change == 0.0 -> s
+            change == 0.0 -> ""
+            change < 0.0 -> s
             change > 0.0 -> "+$s"
             else -> ""
         }

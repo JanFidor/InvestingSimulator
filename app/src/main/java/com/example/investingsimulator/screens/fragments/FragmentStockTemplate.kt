@@ -13,6 +13,10 @@ import com.example.investingsimulator.databinding.FragmentStockListBinding
 import com.example.investingsimulator.screens.StockListAdapter
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 import com.example.investingsimulator.room.templates.StockTemplateRoom
+import com.jakewharton.rxbinding4.appcompat.queryTextChangeEvents
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import java.util.*
+import java.util.concurrent.TimeUnit
 
 abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
     private lateinit var binding: FragmentStockListBinding
@@ -23,7 +27,6 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
         savedInstanceState: Bundle? ): View {
 
         binding = FragmentStockListBinding.inflate(inflater, container, false)
-
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
         binding.fragment = this
@@ -34,28 +37,22 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
-        val adapter = StockListAdapter(viewModel.stockVisible.value ?: listOf(), requireActivity())
+        val adapter = StockListAdapter(viewModel.stockVisible.value ?: listOf(), this)
         recyclerView.adapter = adapter
 
         viewModel.stockVisible.observe(viewLifecycleOwner) {recipes ->
             adapter.reload(recipes ?: listOf())
         }
 
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchView
+            .queryTextChangeEvents()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .map{it.queryText.toString()}
+            .filter {it.isNotEmpty()}
+            .map { it.lowercase(Locale.getDefault()).trim() }
+            .distinctUntilChanged()
+            .subscribeBy { viewModel.updateSearch(it)}
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.searched.value = newText
-                return false
-            }
-
-            override fun onQueryTextSubmit(query: String): Boolean {
-                viewModel.searched.value = query
-                return false
-            }
-
-        })
-
-        viewModel.searched.observe(viewLifecycleOwner, {viewModel.updateSearch()})
         viewModel.stockVisible.observe(viewLifecycleOwner, {adapter.reload(viewModel.stockVisible.value ?: listOf())})
 
         }

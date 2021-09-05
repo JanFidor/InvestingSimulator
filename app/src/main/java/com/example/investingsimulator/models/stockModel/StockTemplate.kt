@@ -18,27 +18,41 @@ import retrofit2.Response
 
 open class StockTemplate(private val stockData: StockTemplateRoom){
 
-    val change: LiveData<Double> = liveData {
-        val data = RetrofitInstance.getQuote(symbol)// loadUser is a suspend function.
-        emit(data?.change_percentage ?: 0.0)
-    }
+
+    private val _text = MutableLiveData("")
+    val text: LiveData<String>
+        get() = _text
 
     val symbol = stockData.symbol
     val description = stockData.description
 
+    private val _change = liveData {
+        val quote = RetrofitInstance.getQuoteS(symbol)
+        Log.d("stock", "change value")
+        emit(quote?.change_percentage ?: 0.0)
+    }
+
+    val change: LiveData<Double>
+        get() = _change
+
+
+
+
+
     private val _data: MutableLiveData<StockAnalysis> by lazy{
+        /*Log.d("access", symbol)
         val end = DateIntervals.getCalculatedDate(0)
         val start = DateIntervals.getCalculatedDate(-30)
         val observable = RetrofitInstance.getHistory(stockData.symbol, start, end)
 
-        Log.d("check", "2")
-
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy { _data.value = StockAnalysis(it.history.day.toList()) }
+            .subscribeBy {
+                _data.value = StockAnalysis(it.history.day.toList())
+            }*/
 
-        MutableLiveData(StockAnalysis(null))
+        MutableLiveData(null)
     }
     val data: LiveData<StockAnalysis> = _data
 

@@ -7,6 +7,7 @@ import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.google.gson.JsonSyntaxException
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.exceptions.OnErrorNotImplementedException
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -58,23 +59,42 @@ object RetrofitInstance {
         return list
     }*/
 
-    /*fun getSearchedStocks(search: String): List<String>{
-        var list: List<String> = listOf()
+    fun getSearchedStocks(search: String): Observable<List<SymbolData>>{
+        var observable: Observable<List<SymbolData>> = Observable.just(listOf())
+        observable =
         try {
             val call = InterfaceAPI.getSymbols(search)
-            val response = call.execute()
-            if(response.isSuccessful) list = RetrofitParser.getSymbols(response.body())
+            call.map {
+                for(data in it.securities.security)Log.d("search", "call: ${data.symbol}, ${data.description}")
+                RetrofitParser.getSymbols(it)}
         }
-        catch (e : JsonSyntaxException){
+        catch (e : OnErrorNotImplementedException){
+            Log.d("search", "catched")
             val call = InterfaceAPI.getSymbol(search)
-            val response = call.execute()
-            if(response.isSuccessful) list = RetrofitParser.getSymbol(response.body())
+            call.map {
+                Log.d("search",
+                    "call: ${it.securities.security.symbol}  ${it.securities.security.description}")
+
+                RetrofitParser.getSymbol(it)}
         }
-        return list
+        /*catch (e : IllegalThreadStateException){
+            val call = InterfaceAPI.getSymbol(search)
+            call.map {
+                Log.d("search",
+                    "call: ${it.securities.security.symbol}  ${it.securities.security.description}")
+                RetrofitParser.getSymbol(it)}
+        }*/
+
+
+        return observable
     }
-*/
-    suspend fun getQuote(symbol: String): Quote?{
-        return RetrofitParser.getQuote(InterfaceAPI.getQuote(symbol))
+    fun getQuote(symbol: String): Observable<Quote?>{
+        return InterfaceAPI.getQuote(symbol)
+            .map{RetrofitParser.getQuote(it)}
+    }
+
+    suspend fun getQuoteS(symbol: String): Quote?{
+        return RetrofitParser.getQuote(InterfaceAPI.getQuoteS(symbol))
     }
 
     /*suspend fun getHistory(symbols: String, start: String, end: String):List<DayData>{

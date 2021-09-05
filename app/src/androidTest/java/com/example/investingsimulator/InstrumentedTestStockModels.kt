@@ -16,7 +16,7 @@ class InstrumentedTestStockModels {
     @get:Rule
     val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    @Test
+    /*@Test
     fun test_1() {
         val symbol = "aapl"
         val stock = StockFavouriteRoom(symbol, "Apple Corporation")
@@ -25,5 +25,5 @@ class InstrumentedTestStockModels {
         runBlocking { model.getHistory() }
 
         Log.d("test", model._data.value?.dateData.toString())
-    }
+    }*/
 }

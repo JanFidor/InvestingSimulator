@@ -54,11 +54,11 @@ object StockBlock{
     val list = mutableListOf<StockBoughtRoom>()
 
     init {
-        list.add(StockBoughtRoom("A", 5.243, 8.461))
+        /*list.add(StockBoughtRoom("A", 5.243, 8.461))
         list.add(StockBoughtRoom("B", 5.2, 3.1))
         list.add(StockBoughtRoom("C", 1.09, 2.09))
         list.add(StockBoughtRoom("D", 6.0, 4.98))
-        list.add(StockBoughtRoom("E", 257.568, 1.0))
+        list.add(StockBoughtRoom("E", 257.568, 1.0))*/
     }
 
 

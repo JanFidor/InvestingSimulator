@@ -19,8 +19,8 @@ class WalletFragment :  Fragment() {
     ): View {
         val binding = FragmentSettingsBinding.inflate(inflater, container, false)
         binding.apply{
+            lifecycleOwner = this@WalletFragment.viewLifecycleOwner
             stock = StockFavourite(StockFavouriteRoom("AAPL", "Apple"))
-            Log.d("check", "1")
         }
         return binding.root
     }

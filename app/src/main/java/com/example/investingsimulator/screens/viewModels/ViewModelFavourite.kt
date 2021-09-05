@@ -15,6 +15,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.rx3.rxSingle
 import java.lang.IllegalStateException
+import java.lang.Integer.min
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -23,36 +24,28 @@ class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavo
     /*override val stockAll: MutableLiveData<List<StockTemplate>> =
         MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
 
-    val disposable = CompositeDisposable()
+    private val disposable = CompositeDisposable()
 
     fun showSearched(){
         Log.d("search", "api call")
 
-        val observable = Observable
-            .just(searched.value ?: "")
-            .debounce(300, TimeUnit.MILLISECONDS)
-            .filter {it.isNotEmpty()}
-            .map { it.lowercase(Locale.getDefault()).trim() }
-            .distinctUntilChanged()
-            /*.switchMap { query ->  Observable
-                .create<Array<String>>{ RetrofitInstance.getSearchedStocks(query) }
-            }*/
-            /*.map { query ->
-                RetrofitInstance.getSearch(query)
-            }*/
-            .flatMap {
-                rxSingle { RetrofitInstance.getSearch(it)
-                }.toObservable()
-            }
+        val observable = RetrofitInstance.getSearchedStocks(searched)
             // TODO transfer responsibility for converting data
-            .map {list -> list.map {symbolData ->
-                StockFavouriteRoom(symbolData.symbol, symbolData.description)}}
-            .map { list -> list.map {stock ->
+            .map{
+                Log.d("search", "check 1")
+                it.take(min(20, it.size))}
+
+                // TODO make temporary cache
+            .map {list -> Log.d("search", "check 2")
+                list.map {
+                    symbolData -> StockFavouriteRoom(symbolData.symbol, symbolData.description ?: "")}}
+            .map { list -> Log.d("search", "check 3")
+                list.map {stock ->
                 StockFavourite(stock)}}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe {
-                Log.d("search", "list:   $it")
+                Log.d("search", "check 4")
                 _stockVisible.value = _stockVisible.value?.plus(it)
             }
         disposable.add(observable)
