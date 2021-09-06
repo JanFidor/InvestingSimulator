@@ -40,7 +40,7 @@ open class StockTemplate(private val stockData: StockTemplateRoom){
 
 
     private val _data: MutableLiveData<StockAnalysis> by lazy{
-        /*Log.d("access", symbol)
+        Log.d("access", symbol)
         val end = DateIntervals.getCalculatedDate(0)
         val start = DateIntervals.getCalculatedDate(-30)
         val observable = RetrofitInstance.getHistory(stockData.symbol, start, end)
@@ -50,11 +50,11 @@ open class StockTemplate(private val stockData: StockTemplateRoom){
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy {
                 _data.value = StockAnalysis(it.history.day.toList())
-            }*/
+            }
 
         MutableLiveData(null)
     }
-    val data: LiveData<StockAnalysis> = _data
+    val data: LiveData<StockAnalysis> by lazy{ _data}
 
     open val isSellable: Boolean = false
 

@@ -34,9 +34,9 @@ interface TestRetrofit {
     fun getSymbol(@Query("q") symbol: String): Observable<SymbolWrapper2>
 
     @GET("/v1/markets/lookup")
-    suspend fun getSymbolsO(@Query("q") symbol: String): SymbolsWrapper2
+    fun getSymbolsO(@Query("q") symbol: String): Call<SymbolsWrapper2>
 
     @GET("/v1/markets/lookup")
-    suspend fun getSymbolO(@Query("q") symbol: String): SymbolWrapper2
+    fun getSymbolO(@Query("q") symbol: String): Call<SymbolWrapper2>
 
 }

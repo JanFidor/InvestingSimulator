@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.exceptions.OnErrorNotImplementedException
+import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -68,7 +69,7 @@ object RetrofitInstance {
                 for(data in it.securities.security)Log.d("search", "call: ${data.symbol}, ${data.description}")
                 RetrofitParser.getSymbols(it)}
         }
-        catch (e : OnErrorNotImplementedException){
+        catch (e : JsonSyntaxException){
             Log.d("search", "catched")
             val call = InterfaceAPI.getSymbol(search)
             call.map {
@@ -77,14 +78,6 @@ object RetrofitInstance {
 
                 RetrofitParser.getSymbol(it)}
         }
-        /*catch (e : IllegalThreadStateException){
-            val call = InterfaceAPI.getSymbol(search)
-            call.map {
-                Log.d("search",
-                    "call: ${it.securities.security.symbol}  ${it.securities.security.description}")
-                RetrofitParser.getSymbol(it)}
-        }*/
-
 
         return observable
     }
@@ -103,14 +96,8 @@ object RetrofitInstance {
     fun getHistory(symbols: String, start: String, end: String)
     :Observable<MarketHistoryMultiple> = InterfaceAPI.getHistory(symbols, start, end)
 
-    suspend fun getSearch(search: String): List<SymbolData>{
-        val data =
-        try {
-            RetrofitParser.getSymbols(InterfaceAPI.getSymbolsO(search))}
-        catch (e : JsonSyntaxException) {
-            RetrofitParser.getSymbol(InterfaceAPI.getSymbolO(search))}
-
-        return data
+    fun getSearchedStock(search: String): Observable<List<SymbolData>>{
+        return InterfaceAPI.getSymbol(search).map{RetrofitParser.getSymbol(it)}
     }
 
 }
