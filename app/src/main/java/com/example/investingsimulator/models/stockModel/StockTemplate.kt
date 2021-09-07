@@ -15,8 +15,9 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
+import java.io.Serializable
 
-open class StockTemplate(private val stockData: StockTemplateRoom){
+open class StockTemplate(protected val stockData: StockTemplateRoom, observe: Boolean) : Serializable{
 
 
     private val _text = MutableLiveData("")
@@ -36,6 +37,9 @@ open class StockTemplate(private val stockData: StockTemplateRoom){
         get() = _change
 
 
+    protected val _observed = MutableLiveData(observe)
+    val observed: LiveData<Boolean>
+        get() = _observed
 
 
 
@@ -58,38 +62,14 @@ open class StockTemplate(private val stockData: StockTemplateRoom){
 
     open val isSellable: Boolean = false
 
-    /*    val data by lazy {
-            val start = DateIntervals.getCalculatedDate(0)
-            val end = DateIntervals.getCalculatedDate(-30)
-            var analysis: StockAnalysis? = null
-
-
-            val call = RetrofitInstance.InterfaceAPI.getLongHistory(stockData.symbol, start, end)
-            call.enqueue(object : retrofit2.Callback<MarketHistoryMultiple>{
-                override fun onFailure(call: retrofit2.Call<MarketHistoryMultiple>, t: Throwable) {
-                    Log.e("api", t.message ?: "No message")
-                }
-
-                override fun onResponse(call: retrofit2.Call<MarketHistoryMultiple>, response: Response<MarketHistoryMultiple>?) {
-                    response?.let {
-                        if (response.isSuccessful) {
-                            // TODO FIXXXXXXXXXXX
-                            analysis = StockAnalysis(arrayOf())
-                        }
-                    }
-                }
-            })
-
-            analysis}*/
-
     // TODO Make factory for single and a list
     companion object{
-        fun create(stockData: StockTemplateRoom): StockTemplate{
-            return StockTemplate(stockData)
+        fun create(stockData: StockTemplateRoom, observe: Boolean): StockTemplate{
+            return StockTemplate(stockData, observe)
         }
 
-        fun create(stockData: List<StockTemplateRoom>): List<StockTemplate>{
-            return stockData.map{StockTemplate(it)}
+        fun create(stockData: List<StockTemplateRoom>, observe: List<Boolean>): List<StockTemplate>{
+            return stockData.mapIndexed{ind, it -> StockTemplate(it, observe[ind])}
         }
 
     }

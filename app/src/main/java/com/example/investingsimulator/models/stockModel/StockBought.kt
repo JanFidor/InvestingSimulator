@@ -3,7 +3,7 @@ package com.example.investingsimulator.models.stockModel
 import com.example.investingsimulator.room.bought.StockBoughtRoom
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 
-class StockBought(stockData: StockTemplateRoom): StockTemplate(stockData) {
+class StockBought(stockData: StockTemplateRoom, observe: Boolean): StockTemplate(stockData, observe) {
     override val isSellable: Boolean
         get() = true
 

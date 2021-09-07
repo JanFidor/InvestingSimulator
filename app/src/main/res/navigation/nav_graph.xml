@@ -15,11 +15,28 @@
         android:id="@+id/searchFragment"
         android:name="com.example.investingsimulator.screens.fragments.FragmentStockFavourite"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_stock_list" />
+        tools:layout="@layout/fragment_stock_list" >
+        <action
+            android:id="@+id/action_searchFragment_to_fragmentStockDetails"
+            app:destination="@id/fragmentStockDetails" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.investingsimulator.screens.fragments.WalletFragment"
-        android:label="@string/AAPL"
+        android:label="AAPL"
         tools:layout="@layout/fragment_settings" />
+    <fragment
+        android:id="@+id/fragmentStockDetails"
+        android:name="com.example.investingsimulator.screens.fragments.FragmentStockDetails"
+        android:label="{symbol}"
+        tools:layout="@layout/fragment_settings">
+        <argument
+            android:name="stockData"
+            app:argType="com.example.investingsimulator.models.stockModel.StockTemplate"
+            app:nullable="true" />
+        <argument
+            android:name="symbol"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

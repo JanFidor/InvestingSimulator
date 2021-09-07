@@ -20,7 +20,10 @@ import java.util.concurrent.TimeUnit
 
 class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtRoom>(application) {
     override val _repository = RepositoryBoughtRoom(application)
+
+    override val stockAll: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(_repository.getAll().map{ StockBought(it, true) })}
     /*override val stockAll: MutableLiveData<List<StockTemplate>> =
         MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
 
+    override fun getList(): List<StockTemplate> = _repository.getAll().map{ StockBought(it, true) }
 }

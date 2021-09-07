@@ -48,7 +48,6 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
             .queryTextChangeEvents()
             .debounce(500, TimeUnit.MILLISECONDS)
             .map{it.queryText.toString()}
-            .filter {it.isNotEmpty()}
             .map { it.lowercase(Locale.getDefault()).trim() }
             .distinctUntilChanged()
             .subscribeBy { viewModel.updateSearch(it)}

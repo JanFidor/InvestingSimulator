@@ -5,14 +5,19 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.investingsimulator.databinding.RowStockBinding
 import com.example.investingsimulator.models.TextFormatting
+import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
+import com.example.investingsimulator.screens.fragments.FragmentStockFavourite
+import com.example.investingsimulator.screens.fragments.FragmentStockFavouriteDirections
+import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 
 class StockListAdapter(
     private var stockList: List<StockTemplate>,
-    private val fragment: Fragment
+    private val fragment: Fragment,
     ) : RecyclerView.Adapter<StockListAdapter.StockHolder>() {
 
     fun reload(newStockList: List<StockTemplate>){
@@ -39,13 +44,16 @@ class StockListAdapter(
         fun bind(stock: StockTemplate) {
             with(binding){
                 lifecycleOwner = fragment.viewLifecycleOwner
-                stockData = stock
+                stockData = stock as StockFavourite?
+
                 stockHolder = this@StockHolder
             }
+            TextFormatting.setObservedColor(stock.observed.value ?: false, binding.star)
         }
 
         fun openGraph(){
-            return
+            val action = FragmentStockFavouriteDirections.actionSearchFragmentToFragmentStockDetails(binding.stockData, binding.stockData?.symbol ?: "")
+            fragment.findNavController().navigate(action)
         }
     }
 }

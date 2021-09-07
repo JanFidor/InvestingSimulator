@@ -1,6 +1,11 @@
 package com.example.investingsimulator.models
 
 import android.graphics.Color
+import android.util.Log
+import android.widget.ImageView
+import androidx.annotation.ColorInt
+import androidx.core.content.ContextCompat
+import com.example.investingsimulator.R
 
 object TextFormatting {
     @JvmStatic
@@ -22,6 +27,19 @@ object TextFormatting {
             change < 0.0 -> s
             change > 0.0 -> "+$s"
             else -> ""
+        }
+    }
+
+
+    @JvmStatic
+    fun setObservedColor(bool: Boolean, view: ImageView){
+        if(bool){
+            view.setColorFilter(ContextCompat.getColor(view.context,
+                R.color.teal_700))
+        }
+        else{
+            view.setColorFilter(ContextCompat.getColor(view.context,
+                R.color.gray))
         }
     }
 }

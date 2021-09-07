@@ -23,6 +23,9 @@ import java.util.concurrent.TimeUnit
 
 class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavouriteRoom>(application) {
     override val _repository = RepositoryFavouriteRoom(application)
+
+    override val stockAll: MutableLiveData<List<StockTemplate>>
+            by lazy{ MutableLiveData(_repository.getAll().map{ StockFavourite(it, true) })}
     /*override val stockAll: MutableLiveData<List<StockTemplate>> =
         MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
 
@@ -34,17 +37,19 @@ class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavo
         observables()
     }
     fun parse(obs: Observable<List<SymbolData>>): Observable<List<StockFavourite>> {
-        return obs.map{
-            Log.d("search", "check 1")
-            it.take(min(20, it.size))}
+        return obs
+            .map{
+                Log.d("search", "check 1")
+                it.take(min(20, it.size))}
 
             // TODO make temporary cache
-            .map {list -> Log.d("search", "check 2")
+            .map {list ->
+                Log.d("search", "check 2")
                 list.map {
                         symbolData -> StockFavouriteRoom(symbolData.symbol, symbolData.description ?: "")}}
             .map { list -> Log.d("search", "check 3")
                 list.map {stock ->
-                    StockFavourite(stock)}}
+                    StockFavourite(stock, false)}}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
@@ -69,6 +74,8 @@ class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavo
 
     override fun filterStock() {
         super.filterStock()
-        showSearched()
+        if(searched != "") showSearched()
     }
+
+    override fun getList(): List<StockTemplate> = _repository.getAll().map{ StockFavourite(it, true) }
 }

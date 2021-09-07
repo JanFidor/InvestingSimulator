@@ -15,16 +15,19 @@ abstract class ViewModelTemplate<T : StockTemplateRoom>(application: Application
 
     protected open val _repository by lazy {RepositoryTemplateRoom<T>(application)}
 
-    private val stockAll: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(_repository.getAll().map{ StockTemplate(it) })}
+    protected open val stockAll: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(_repository.getAll().map{ StockTemplate(it, true) })}
     protected val _stockVisible: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(stockAll.value)}
     val stockVisible: LiveData<List<StockTemplate>>
         get() = _stockVisible
 
     protected var searched: String = ""
 
+    protected open fun getList(): List<StockTemplate> = _repository.getAll().map{ StockTemplate(it, true) }
+
     protected open fun filterStock() {
+        val list = getList()
         Log.d("search", "filtering from database")
-        _stockVisible.postValue(stockAll.value?.filter {
+        _stockVisible.postValue(list.filter {
             it.symbol.length >= (searched.length) &&
                     it.symbol.slice(searched.indices)  == searched
         })
@@ -34,7 +37,7 @@ abstract class ViewModelTemplate<T : StockTemplateRoom>(application: Application
         _repository.create(stock)
         filterStock()
     }
-    fun deleteRecipe(stock: T) {
+    fun delete(stock: T) {
         _repository.delete(stock)
         filterStock()
     }
