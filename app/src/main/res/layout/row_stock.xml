@@ -1,25 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="stockData"
-            type="com.example.investingsimulator.models.stockModel.StockFavourite" />
+            type="com.example.investingsimulator.models.stockModel.StockTemplate" />
 
         <variable
             name="stockHolder"
-            type="com.example.investingsimulator.screens.StockListAdapter.StockHolder" />
+            type="com.example.investingsimulator.screens.StockTemplateAdapter.StockHolder" />
 
         <import type="com.example.investingsimulator.models.TextFormatting"/>
     </data>
     <RelativeLayout
         android:id="@+id/rowStock"
 
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="20dp">
+        android:layout_margin="10dp">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/star"
@@ -27,55 +25,66 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+
+
             android:src="@drawable/ic_star_24"
-            android:onClick="@{() -> stockData.changeObserved(star)}"
+            android:onClick="@{() -> stockHolder.observe(stockData)}"
 
             android:layout_alignParentStart="true"
+            android:padding="5dp"
             />
 
-
-        <TextView
-            android:id="@+id/text_symbol"
-
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
 
-            android:textSize="18sp"
-            android:layout_marginHorizontal="10dp"
-            android:text="@{stockData.symbol}"
-            android:onClick="@{() -> stockHolder.openGraph()}"
-
-            android:layout_toEndOf="@+id/star"
-            />
-
-        <TextView
-            android:id="@+id/text_increase"
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
-            android:textSize="10sp"
-            android:layout_marginHorizontal="10dp"
-            android:text="@{stockData.description}"
-
-            android:layout_below="@+id/text_symbol"
-
-            />
+            android:layout_marginStart="25dp"
 
 
-        <TextView
-            android:id="@+id/text_change"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:layout_alignParentEnd="true"
-            android:text="@{TextFormatting.getPercentText(stockData.change)}"
-            android:textColor="@{TextFormatting.getPercentColor(stockData.change)}"
+            android:layout_alignEnd="@id/star"
+            android:layout_alignParentEnd="true">
 
-            android:onClick="@{() -> stockHolder.openGraph()}"
-            />
+            <TextView
+                android:id="@+id/text_symbol"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="18sp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@{stockData.symbol}"
+                android:onClick="@{() -> stockHolder.openGraph()}"
+
+                android:layout_alignParentStart="true"
+                />
+
+            <TextView
+                android:id="@+id/text_increase"
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:textSize="12sp"
+                android:layout_marginHorizontal="10dp"
+                android:text="@{stockData.description}"
+
+                android:layout_below="@+id/text_symbol"
+
+                />
 
 
+            <TextView
+                android:id="@+id/text_change"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_alignParentEnd="true"
+                android:text="@{TextFormatting.getPercentText(stockData.change)}"
+                android:textColor="@{TextFormatting.getPercentColor(stockData.change)}"
 
+                android:onClick="@{() -> stockHolder.openGraph()}"
+                />
+
+        </RelativeLayout>
     </RelativeLayout>
 </layout>

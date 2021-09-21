@@ -3,13 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/settingsFragment">
+    app:startDestination="@id/searchFragment">
 
     <fragment
         android:id="@+id/walletFragment"
         android:name="com.example.investingsimulator.screens.fragments.FragmentStockBought"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_wallet" />
+        tools:layout="@layout/fragment_wallet" >
+        <action
+            android:id="@+id/action_walletFragment_to_fragmentStockDetails"
+            app:destination="@id/fragmentStockDetails" />
+    </fragment>
 
     <fragment
         android:id="@+id/searchFragment"
@@ -24,12 +28,12 @@
         android:id="@+id/settingsFragment"
         android:name="com.example.investingsimulator.screens.fragments.WalletFragment"
         android:label="AAPL"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_details" />
     <fragment
         android:id="@+id/fragmentStockDetails"
         android:name="com.example.investingsimulator.screens.fragments.FragmentStockDetails"
         android:label="{symbol}"
-        tools:layout="@layout/fragment_settings">
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="stockData"
             app:argType="com.example.investingsimulator.models.stockModel.StockTemplate"

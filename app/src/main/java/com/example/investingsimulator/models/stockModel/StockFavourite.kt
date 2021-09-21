@@ -15,48 +15,22 @@ import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.screens.viewModels.ViewModelFavourite
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 
-class StockFavourite (stockData: StockTemplateRoom, observe: Boolean): StockTemplate(stockData, observe) {
-    override val isSellable: Boolean
-        get() = false
+class StockFavourite (override val stockData: StockFavouriteRoom, observe: Boolean): StockTemplate(stockData) {
 
+    protected val _observed = MutableLiveData(observe)
+    val observed: LiveData<Boolean>
+        get() = _observed
 
-
-
-    fun changeObserved(view: ImageView){
-        val current = _observed.value
-        current?.let {
-            Log.d("wtf", "$symbol ${!current}")
-            TextFormatting.setObservedColor(!current, view)
-
-            val dao = StockDB.getInstance(view.context).stockFavouriteDAO
-            if(current){
-                Toast.makeText(view.context, "deleted $symbol from observed", Toast.LENGTH_SHORT).show()
-                dao.delete(stockData as StockFavouriteRoom)
-            }
-            else{
-                Toast.makeText(view.context, "added $symbol to observed", Toast.LENGTH_SHORT).show()
-                dao.insert(stockData as StockFavouriteRoom)
-            }
-
-            Log.d("database", "${dao.getAll()}")
-            _observed.postValue(!current)
-        }
-
-
-
-
+    fun changeObserved(){
+        _observed.postValue(_observed.value?.not() ?: true)
     }
 
-    companion object{
-        fun create(stockData: StockFavouriteRoom, observe: Boolean): StockFavourite{
-            return StockFavourite(stockData, observe)
-        }
+    fun getCore() = stockData
 
-        fun create(stockData: List<StockFavouriteRoom>, observe: List<Boolean>): List<StockFavourite>{
-            return stockData.mapIndexed{ind, it -> StockFavourite(it, observe[ind])}
-        }
-
-    }
+    override val symbol: String
+        get() = stockData.symbol
+    override val description: String
+        get() = stockData.description
 
     /*override val stockData = stockData as StockFavouriteRoom*/
 }

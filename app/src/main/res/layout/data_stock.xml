@@ -6,6 +6,10 @@
 
     <data>
         <variable
+            name="fragment"
+            type="com.example.investingsimulator.screens.fragments.FragmentStockDetails" />
+
+        <variable
             name="dataSet"
             type="com.example.investingsimulator.models.StockAnalysis" />
     </data>
@@ -50,7 +54,7 @@
 
             app:layout_constraintTop_toBottomOf="@id/text_price"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/button_trade"
+            app:layout_constraintBottom_toTopOf="@id/button_buy"
             app:layout_constraintEnd_toStartOf="@+id/text_date"
             />
 
@@ -64,23 +68,40 @@
 
             app:layout_constraintTop_toBottomOf="@id/text_increase"
             app:layout_constraintStart_toEndOf="@+id/text_volume"
-            app:layout_constraintBottom_toTopOf="@id/button_trade"
+            app:layout_constraintBottom_toTopOf="@id/button_sell"
             app:layout_constraintEnd_toEndOf="parent"
             />
 
         <Button
-            android:id="@+id/button_trade"
-            android:layout_width="match_parent"
+            android:id="@+id/button_buy"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
-            android:text="Trade"
-
+            android:text="Buy"
+            android:onClick="@{() -> fragment.buy()}"
 
             app:layout_constraintTop_toBottomOf="@+id/text_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_sell"
+            />
+
+        <Button
+            android:id="@+id/button_sell"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="50dp"
+            android:text="Sell"
+            android:clickable="false"
+            android:onClick="@{() -> fragment.sell()}"
+
+            app:layout_constraintTop_toBottomOf="@+id/text_date"
+            app:layout_constraintStart_toEndOf="@id/button_buy"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             />
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

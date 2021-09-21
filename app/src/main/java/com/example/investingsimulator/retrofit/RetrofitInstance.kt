@@ -50,37 +50,6 @@ object RetrofitInstance {
 
     val InterfaceAPI: TestRetrofit = retrofit.create(TestRetrofit::class.java)
 
-
-    /*fun getCurrent(symbols: String): Call<QuoteDataWrapper>{
-        return InterfaceAPI.getCurrent(symbols)
-    }
-*/
-    /*fun getHistory(symbol: String, start: String, end: String,): Array<DayData>{
-        var list: Array<DayData> = arrayOf()
-        return list
-    }*/
-
-    fun getSearchedStocks(search: String): Observable<List<SymbolData>>{
-        var observable: Observable<List<SymbolData>> = Observable.just(listOf())
-        observable =
-        try {
-            val call = InterfaceAPI.getSymbols(search)
-            call.map {
-                for(data in it.securities.security)Log.d("search", "call: ${data.symbol}, ${data.description}")
-                RetrofitParser.getSymbols(it)}
-        }
-        catch (e : JsonSyntaxException){
-            Log.d("search", "catched")
-            val call = InterfaceAPI.getSymbol(search)
-            call.map {
-                Log.d("search",
-                    "call: ${it.securities.security.symbol}  ${it.securities.security.description}")
-
-                RetrofitParser.getSymbol(it)}
-        }
-
-        return observable
-    }
     fun getQuote(symbol: String): Observable<Quote?>{
         return InterfaceAPI.getQuote(symbol)
             .map{RetrofitParser.getQuote(it)}
@@ -90,11 +59,12 @@ object RetrofitInstance {
         return RetrofitParser.getQuote(InterfaceAPI.getQuoteS(symbol))
     }
 
-    /*suspend fun getHistory(symbols: String, start: String, end: String):List<DayData>{
-        return RetrofitParser.getHistory(InterfaceAPI.getLongHistoryO(symbols, start, end))
-    }*/
     fun getHistory(symbols: String, start: String, end: String)
-    :Observable<MarketHistoryMultiple> = InterfaceAPI.getHistory(symbols, start, end)
+    :Observable<List<DayData>> = InterfaceAPI.getHistory(symbols, start, end).map{RetrofitParser.getHistory(it)}
+
+    fun getSearchedStocks(search: String): Observable<List<SymbolData>>{
+        return InterfaceAPI.getSymbols(search).map{RetrofitParser.getSymbols(it)}
+    }
 
     fun getSearchedStock(search: String): Observable<List<SymbolData>>{
         return InterfaceAPI.getSymbol(search).map{RetrofitParser.getSymbol(it)}

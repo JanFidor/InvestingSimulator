@@ -17,19 +17,18 @@ import retrofit2.Call
 import retrofit2.Response
 import java.io.Serializable
 
-open class StockTemplate(protected val stockData: StockTemplateRoom, observe: Boolean) : Serializable{
-
-
+abstract class StockTemplate(open val stockData: StockTemplateRoom) : Serializable{
     private val _text = MutableLiveData("")
     val text: LiveData<String>
         get() = _text
 
-    val symbol = stockData.symbol
-    val description = stockData.description
+    abstract val symbol: String
+    abstract val description: String
 
     private val _change = liveData {
         val quote = RetrofitInstance.getQuoteS(symbol)
         Log.d("stock", "change value")
+        _last.postValue(quote?.last ?: 0.0)
         emit(quote?.change_percentage ?: 0.0)
     }
 
@@ -37,40 +36,24 @@ open class StockTemplate(protected val stockData: StockTemplateRoom, observe: Bo
         get() = _change
 
 
-    protected val _observed = MutableLiveData(observe)
-    val observed: LiveData<Boolean>
-        get() = _observed
-
-
+    private val _last = MutableLiveData(0.0)
+    val last: LiveData<Double>
+        get() = _last
 
     private val _data: MutableLiveData<StockAnalysis> by lazy{
         Log.d("access", symbol)
-        val end = DateIntervals.getCalculatedDate(0)
-        val start = DateIntervals.getCalculatedDate(-30)
+        val end = DateIntervals.getCalculatedDate(-1)
+        val start = DateIntervals.getCalculatedDate(-31)
         val observable = RetrofitInstance.getHistory(stockData.symbol, start, end)
 
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy {
-                _data.value = StockAnalysis(it.history.day.toList())
+                _data.value = StockAnalysis(it)
             }
 
         MutableLiveData(null)
     }
     val data: LiveData<StockAnalysis> by lazy{ _data}
-
-    open val isSellable: Boolean = false
-
-    // TODO Make factory for single and a list
-    companion object{
-        fun create(stockData: StockTemplateRoom, observe: Boolean): StockTemplate{
-            return StockTemplate(stockData, observe)
-        }
-
-        fun create(stockData: List<StockTemplateRoom>, observe: List<Boolean>): List<StockTemplate>{
-            return stockData.mapIndexed{ind, it -> StockTemplate(it, observe[ind])}
-        }
-
-    }
 }

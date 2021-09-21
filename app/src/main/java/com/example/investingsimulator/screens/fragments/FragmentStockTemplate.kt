@@ -1,16 +1,15 @@
 package com.example.investingsimulator.screens.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.investingsimulator.databinding.FragmentStockListBinding
-import com.example.investingsimulator.screens.StockListAdapter
+import com.example.investingsimulator.models.stockModel.StockTemplate
+import com.example.investingsimulator.screens.StockTemplateAdapter
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.jakewharton.rxbinding4.appcompat.queryTextChangeEvents
@@ -18,9 +17,9 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
+abstract class FragmentStockTemplate<T : StockTemplateRoom, U : StockTemplate> :  Fragment() {
     private lateinit var binding: FragmentStockListBinding
-    protected open val viewModel: ViewModelTemplate<T> by activityViewModels()
+    protected open val viewModel: ViewModelTemplate<T, U> by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +36,7 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(binding.root.context)
-        val adapter = StockListAdapter(viewModel.stockVisible.value ?: listOf(), this)
+        val adapter = getAdapter()
         recyclerView.adapter = adapter
 
         viewModel.stockVisible.observe(viewLifecycleOwner) {recipes ->
@@ -55,4 +54,7 @@ abstract class FragmentStockTemplate<T : StockTemplateRoom> :  Fragment() {
         viewModel.stockVisible.observe(viewLifecycleOwner, {adapter.reload(viewModel.stockVisible.value ?: listOf())})
 
         }
+
+    abstract fun getAdapter(): StockTemplateAdapter<T, U>
+
 }

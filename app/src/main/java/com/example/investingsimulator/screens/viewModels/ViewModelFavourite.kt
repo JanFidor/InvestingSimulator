@@ -2,6 +2,7 @@ package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
@@ -21,61 +22,88 @@ import java.lang.Integer.min
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavouriteRoom>(application) {
+open class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavouriteRoom, StockFavourite>(application) {
     override val _repository = RepositoryFavouriteRoom(application)
 
-    override val stockAll: MutableLiveData<List<StockTemplate>>
-            by lazy{ MutableLiveData(_repository.getAll().map{ StockFavourite(it, true) })}
-    /*override val stockAll: MutableLiveData<List<StockTemplate>> =
-        MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
+    override val stockAll: MutableMap<String, StockFavourite>
+            by lazy {
+                val map = mutableMapOf<String, StockFavourite>()
+                _repository.getAll().forEach {
+                    Log.d("stock", it.toString())
+                    map[it.symbol] = StockFavourite(it, true)
+                }
+                map}
+
+    val temporaryCache: MutableMap<String, StockFavourite> = mutableMapOf()
 
     private val disposable = CompositeDisposable()
 
-    fun showSearched(){
-        Log.d("search", "api call")
-
-        observables()
-    }
     fun parse(obs: Observable<List<SymbolData>>): Observable<List<StockFavourite>> {
         return obs
+            .map { it.filter { it.symbol !in stockAll } }
             .map{
-                Log.d("search", "check 1")
                 it.take(min(20, it.size))}
-
-            // TODO make temporary cache
             .map {list ->
-                Log.d("search", "check 2")
                 list.map {
                         symbolData -> StockFavouriteRoom(symbolData.symbol, symbolData.description ?: "")}}
-            .map { list -> Log.d("search", "check 3")
-                list.map {stock ->
-                    StockFavourite(stock, false)}}
+            .map { list -> list.map {stock ->
+                if(stock.symbol !in temporaryCache) temporaryCache[stock.symbol] = StockFavourite(stock, false)
+                temporaryCache[stock.symbol]!!}}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun observables(){
+    private fun getObservables(list: List<StockFavourite>){
         val obs = RetrofitInstance.getSearchedStocks(searched)
-        val dis = parse(obs).subscribe ({
-            Log.d("search", "check 4")
-            _stockVisible.value = _stockVisible.value?.plus(it)
-        }, {observable()})
+        val dis = parse(obs).subscribe (
+            { Log.d("call", "1   $list   $it")
+                _stockVisible.postValue(list.plus(it))
+            }, {getObservable(list)})
+
         disposable.add(dis)
     }
 
-    fun observable(){
+    private fun getObservable(list: List<StockFavourite>){
         val obs = RetrofitInstance.getSearchedStock(searched)
-        val dis = parse(obs).subscribe ({
-                Log.d("search", "check 4")
-                _stockVisible.value = _stockVisible.value?.plus(it)
-            }, {})
+        val dis = parse(obs).subscribe(
+            { Log.d("call", "2  $list   $it")
+                _stockVisible.postValue(list.plus(it)) }, {})
         disposable.add(dis)
     }
 
-    override fun filterStock() {
-        super.filterStock()
-        if(searched != "") showSearched()
+    override fun filterStock(): List<StockFavourite> {
+        val list = super.filterStock()
+        Log.d("call", "list: $list")
+        if(searched != "") getObservables(list)
+        return list
     }
 
-    override fun getList(): List<StockTemplate> = _repository.getAll().map{ StockFavourite(it, true) }
+    override fun getFiltered(): List<StockFavourite>{
+        val list = (super.getFiltered()).filter { it.observed.value ?: false }
+        Log.d("saved", list.size.toString())
+        return list
+    }
+
+    override fun add(stock: StockFavouriteRoom) {
+        _repository.create(stock)
+        val stock: StockFavourite? = temporaryCache[stock.symbol]
+        stock?.let{
+            stockAll[it.symbol] = it
+            temporaryCache.remove(it.symbol)
+        }
+
+    }
+
+    override fun delete(stock: StockFavouriteRoom) {
+        _repository.delete(stock)
+        val stock: StockFavourite? = stockAll[stock.symbol]
+        stock?.let{
+            temporaryCache[it.symbol] = it
+            stockAll.remove(it.symbol)
+        }
+    }
+
+    fun clear(){
+        disposable.clear()
+    }
 }

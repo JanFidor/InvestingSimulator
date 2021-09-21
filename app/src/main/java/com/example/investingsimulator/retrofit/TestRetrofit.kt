@@ -20,7 +20,7 @@ interface TestRetrofit {
     @GET("/v1/markets/history")
     fun getLongHistory(@Query("symbol") symbols: String,
                        @Query("start") start: String,
-                       @Query("end") end: String,): Call<MarketHistoryMultiple>
+                       @Query("end") end: String,): Observable<MarketHistorySingle>
 
     @GET("/v1/markets/history")
     suspend fun getLongHistoryO(@Query("symbol") symbols: String,

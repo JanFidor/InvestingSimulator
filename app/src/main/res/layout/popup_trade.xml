@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+    <data>
+        <variable
+            name="fragment"
+            type="com.example.investingsimulator.screens.popups.DialogFragmentTrade" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@color/background_dark"
+        app:cardUseCompatPadding="true"
+        >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/money_owned_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Funds"
+                android:paddingHorizontal="10dp"
+                />
+
+            <TextView
+                android:id="@+id/money_owned_v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@{fragment.funds}"
+                />
+
+            <TextView
+                android:id="@+id/stock_owned_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@{fragment.symbol}"
+                />
+
+            <TextView
+                android:id="@+id/stock_owned_v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:text="@{fragment.owned}"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/money_buying_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price: "
+                android:paddingHorizontal="10dp"
+                />
+
+
+            <EditText
+                android:id="@+id/money_buying_v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={fragment.transactionValue}"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="10dp"
+                android:imeOptions="actionDone"
+                />
+
+            <TextView
+                android:id="@+id/stock_buying_t"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount: "
+                android:paddingHorizontal="10dp"
+                />
+
+            <EditText
+                android:id="@+id/stock_buying_v"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@={fragment.transactionAmount}"
+                android:inputType="numberDecimal"
+                android:paddingHorizontal="10dp"
+                android:imeOptions="actionDone"
+                />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{fragment.tradeType}"
+            android:onClick="@{() -> fragment.executeTrade()}"/>
+    </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>
+
+
+<!--
+<androidx.constraintlayout.widget.ConstraintLayout
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_margin="10dp"
+
+android:layout_gravity="center_horizontal"
+    >
+
+<TextView
+    android:id="@+id/title"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
+
+<TextView
+    android:id="@+id/money_owned_t"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Funds"
+    android:layout_alignParentTop="true"
+    android:paddingHorizontal="10dp"
+
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintEnd_toStartOf="@id/money_owned_v"
+    />
+
+<TextView
+    android:id="@+id/money_owned_v"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:text="@{fragment.funds}"
+
+    app:layout_constraintStart_toEndOf="@id/money_owned_t"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintEnd_toStartOf="@id/stock_owned_t"
+    />
+
+<TextView
+    android:id="@+id/stock_owned_t"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:text="@{fragment.symbol}"
+
+    app:layout_constraintStart_toEndOf="@id/money_owned_v"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintEnd_toStartOf="@id/stock_owned_v"
+    />
+
+<TextView
+    android:id="@+id/stock_owned_v"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="10dp"
+    android:text="@{fragment.owned}"
+
+    app:layout_constraintStart_toEndOf="@id/money_owned_t"
+    app:layout_constraintTop_toBottomOf="@id/title"
+    app:layout_constraintEnd_toEndOf="parent"
+    />
+
+
+
+<TextView
+    android:id="@+id/money_buying_t"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Cost of stock: "
+    android:layout_alignParentTop="true"
+    />
+
+
+<EditText
+    android:id="@+id/money_buying_v"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@={fragment.transactionValue}"
+    android:inputType="numberDecimal"
+
+    />
+
+<TextView
+    android:id="@+id/stock_buying_t"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="Amount of stock bought: "
+    android:layout_alignParentTop="true"
+    />
+
+<EditText
+    android:id="@+id/stock_buying_v"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:text="@={fragment.transactionAmount}"
+    android:inputType="numberDecimal"
+    />
+
+</androidx.constraintlayout.widget.ConstraintLayout>-->

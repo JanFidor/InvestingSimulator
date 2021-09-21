@@ -10,39 +10,40 @@ import com.example.investingsimulator.room.templates.RepositoryTemplateRoom
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.models.stockModel.StockTemplate
 
-abstract class ViewModelTemplate<T : StockTemplateRoom>(application: Application) : AndroidViewModel(application) {
+abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(application: Application) : AndroidViewModel(application) {
     //private val _repository = RecipeRepository(application)
 
     protected open val _repository by lazy {RepositoryTemplateRoom<T>(application)}
 
-    protected open val stockAll: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(_repository.getAll().map{ StockTemplate(it, true) })}
-    protected val _stockVisible: MutableLiveData<List<StockTemplate>> by lazy{ MutableLiveData(stockAll.value)}
-    val stockVisible: LiveData<List<StockTemplate>>
+    protected abstract val stockAll: MutableMap<String, U>
+
+    protected val _stockVisible: MutableLiveData<List<U>>
+        by lazy{ MutableLiveData(stockAll.map { it.value })}
+
+    val stockVisible: LiveData<List<U>>
         get() = _stockVisible
 
     protected var searched: String = ""
 
-    protected open fun getList(): List<StockTemplate> = _repository.getAll().map{ StockTemplate(it, true) }
+    protected open fun getFiltered(): List<U> = stockAll.map { it.value }
 
-    protected open fun filterStock() {
-        val list = getList()
-        Log.d("search", "filtering from database")
-        _stockVisible.postValue(list.filter {
-            it.symbol.length >= (searched.length) &&
-                    it.symbol.slice(searched.indices)  == searched
-        })
+    protected open fun filterStock(): List<U> {
+        val list = stockAll
+            .map { it.value }
+            .filter {
+                it.symbol.length >= (searched.length) &&
+                it.symbol.slice(searched.indices)  == searched
+        }
+        _stockVisible.postValue(list)
+        return list
     }
 
-    fun add(stock: T) {
-        _repository.create(stock)
-        filterStock()
-    }
-    fun delete(stock: T) {
-        _repository.delete(stock)
-        filterStock()
-    }
+    abstract fun add(stock: T)
+    abstract fun delete(stock: T)
     fun updateSearch(query: String){
-        searched = query
+        searched = query.uppercase()
         filterStock()
     }
+
+    fun getSize(): Int = stockAll.size
 }

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <!--<variable
+            name="dataSet"
+            type="com.example.investingsimulator.models.StockAnalysis" />
+-->
+        <variable
+            name="stock"
+            type="com.example.investingsimulator.models.stockModel.StockTemplate" />
+
+        <variable
+            name="fragment"
+            type="com.example.investingsimulator.screens.fragments.FragmentStockDetails" />
+    </data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".screens.fragments.FragmentStockBought"
+    >
+
+    <include layout="@layout/graph_stock"
+        android:id="@+id/graph"
+        app:dataSet="@{stock.data}"/>
+
+    <include layout="@layout/data_stock"
+        android:id="@+id/details"
+        app:dataSet="@{stock.data}"
+        app:fragment = "@{fragment}"
+        android:layout_below="@id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!--<TextView
+        android:id="@+id/info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/bottom_bar_settings"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/graph" />-->
+
+
+</RelativeLayout>
+</layout>

@@ -12,16 +12,6 @@ open class RepositoryTemplateRoom<T : StockTemplateRoom>(application: Applicatio
     protected val db = StockDB.getInstance(application)
     protected open val stockDao: RoomDAO<T>? = null
 
-    init{
-
-        /*Observable
-            .fromSingle<List<T>> {stockDao?.getAll()}
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({obj -> _allStock.value = obj}, {e -> Log.e("Room",
-                "Asynchronous call, BoughtStock getAll() \n ${e.message}")})*/
-    }
-
     fun create(obj: T) = stockDao?.insert(obj)
     fun delete(obj: T) = stockDao?.delete(obj)
     fun update(obj: T) = stockDao?.update(obj)
