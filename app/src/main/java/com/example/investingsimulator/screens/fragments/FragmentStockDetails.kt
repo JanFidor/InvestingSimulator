@@ -7,14 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.investingsimulator.databinding.FragmentDetailsBinding
-import com.example.investingsimulator.databinding.FragmentSettingsBinding
-import com.example.investingsimulator.models.stockModel.StockBought
-import com.example.investingsimulator.models.stockModel.StockFavourite
-import com.example.investingsimulator.models.stockModel.StockTemplate
-import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 import com.example.investingsimulator.screens.popups.DialogFragmentBuy
 import com.example.investingsimulator.screens.popups.DialogFragmentSell
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
