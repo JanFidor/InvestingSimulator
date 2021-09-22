@@ -9,6 +9,7 @@ import com.example.investingsimulator.screens.recyclerViewAdapters.StockFavourit
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
 
 class FragmentStockBought : FragmentStockTemplate<StockBoughtRoom, StockBought>() {
+
     override val viewModel: ViewModelBought by activityViewModels()
 
     override fun getAdapter(): StockBoughtAdapter {
@@ -16,4 +17,5 @@ class FragmentStockBought : FragmentStockTemplate<StockBoughtRoom, StockBought>(
 
         return StockBoughtAdapter(list, this, viewModel)
     }
+
 }

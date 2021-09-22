@@ -26,10 +26,15 @@ abstract class StockTemplate(open val stockData: StockTemplateRoom) : Serializab
     abstract val description: String
 
     private val _change = liveData {
-        val quote = RetrofitInstance.getQuoteS(symbol)
+        /*val quote = RetrofitInstance.getQuoteS(symbol)
         Log.d("stock", "change value")
         _last.postValue(quote?.last ?: 0.0)
-        emit(quote?.change_percentage ?: 0.0)
+        emit(quote?.change_percentage ?: 0.0)*/
+        val day = RetrofitInstance.getHistoryDay(symbol, DateIntervals.getCalculatedDate(-2))
+        _last.postValue(day.close)
+        val change = (day.close / day.open) - 1
+
+        emit(change)
     }
 
     val change: LiveData<Double>

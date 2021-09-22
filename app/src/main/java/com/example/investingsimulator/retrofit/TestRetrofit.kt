@@ -23,9 +23,9 @@ interface TestRetrofit {
                        @Query("end") end: String,): Observable<MarketHistorySingle>
 
     @GET("/v1/markets/history")
-    suspend fun getLongHistoryO(@Query("symbol") symbols: String,
+    suspend fun getDay(@Query("symbol") symbols: String,
                        @Query("start") start: String,
-                       @Query("end") end: String,): MarketHistoryMultiple
+                       @Query("end") end: String,): MarketHistorySingle
 
     @GET("/v1/markets/lookup")
     fun getSymbols(@Query("q") symbol: String): Observable<SymbolsWrapper2>

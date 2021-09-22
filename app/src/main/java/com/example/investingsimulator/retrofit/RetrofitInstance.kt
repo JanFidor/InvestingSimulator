@@ -1,24 +1,13 @@
 package com.example.investingsimulator.retrofit
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.models.StockAnalysis
-import com.example.investingsimulator.models.stockModel.StockTemplate
-import com.google.gson.JsonSyntaxException
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.exceptions.OnErrorNotImplementedException
-import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Query
-import java.lang.IllegalStateException
-
 
 object RetrofitInstance {
     private const val TOKEN = "kGMhlocUonPNYwHKWL72zSqN8fQJ "
@@ -68,6 +57,12 @@ object RetrofitInstance {
 
     fun getSearchedStock(search: String): Observable<List<SymbolData>>{
         return InterfaceAPI.getSymbol(search).map{RetrofitParser.getSymbol(it)}
+    }
+
+    suspend fun getHistoryDay(search: String, day: String,): DayData{
+        val day = InterfaceAPI.getDay(search, day, day).history.day
+        Log.d("api", day.toString())
+        return day
     }
 
 }

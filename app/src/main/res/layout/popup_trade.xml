@@ -15,11 +15,13 @@
         android:backgroundTint="@color/background_dark"
         app:cardUseCompatPadding="true"
         >
-    <LinearLayout
+   <!-- <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:focusableInTouchMode="true"
+        android:focusable="true">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -82,6 +84,9 @@
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
                 android:imeOptions="actionDone"
+                android:focusable="true"
+
+                android:focusableInTouchMode="true"
                 />
 
             <TextView
@@ -92,13 +97,15 @@
                 android:paddingHorizontal="10dp"
                 />
 
-            <EditText
+]            <EditText
                 android:id="@+id/stock_buying_v"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@={fragment.transactionAmount}"
+                android:text="@={fragment.transactionValue}"
                 android:inputType="numberDecimal"
                 android:paddingHorizontal="10dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:imeOptions="actionDone"
                 />
         </LinearLayout>
@@ -108,115 +115,8 @@
             android:layout_height="wrap_content"
             android:text="@{fragment.tradeType}"
             android:onClick="@{() -> fragment.executeTrade()}"/>
-    </LinearLayout>
+    </LinearLayout>-->
 
     </androidx.cardview.widget.CardView>
 </layout>
 
-
-<!--
-<androidx.constraintlayout.widget.ConstraintLayout
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_margin="10dp"
-
-android:layout_gravity="center_horizontal"
-    >
-
-<TextView
-    android:id="@+id/title"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-
-
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    />
-
-<TextView
-    android:id="@+id/money_owned_t"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Funds"
-    android:layout_alignParentTop="true"
-    android:paddingHorizontal="10dp"
-
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toBottomOf="@id/title"
-    app:layout_constraintEnd_toStartOf="@id/money_owned_v"
-    />
-
-<TextView
-    android:id="@+id/money_owned_v"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="10dp"
-    android:text="@{fragment.funds}"
-
-    app:layout_constraintStart_toEndOf="@id/money_owned_t"
-    app:layout_constraintTop_toBottomOf="@id/title"
-    app:layout_constraintEnd_toStartOf="@id/stock_owned_t"
-    />
-
-<TextView
-    android:id="@+id/stock_owned_t"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="10dp"
-    android:text="@{fragment.symbol}"
-
-    app:layout_constraintStart_toEndOf="@id/money_owned_v"
-    app:layout_constraintTop_toBottomOf="@id/title"
-    app:layout_constraintEnd_toStartOf="@id/stock_owned_v"
-    />
-
-<TextView
-    android:id="@+id/stock_owned_v"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:paddingHorizontal="10dp"
-    android:text="@{fragment.owned}"
-
-    app:layout_constraintStart_toEndOf="@id/money_owned_t"
-    app:layout_constraintTop_toBottomOf="@id/title"
-    app:layout_constraintEnd_toEndOf="parent"
-    />
-
-
-
-<TextView
-    android:id="@+id/money_buying_t"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Cost of stock: "
-    android:layout_alignParentTop="true"
-    />
-
-
-<EditText
-    android:id="@+id/money_buying_v"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="@={fragment.transactionValue}"
-    android:inputType="numberDecimal"
-
-    />
-
-<TextView
-    android:id="@+id/stock_buying_t"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="Amount of stock bought: "
-    android:layout_alignParentTop="true"
-    />
-
-<EditText
-    android:id="@+id/stock_buying_v"
-    android:layout_width="0dp"
-    android:layout_height="wrap_content"
-    android:text="@={fragment.transactionAmount}"
-    android:inputType="numberDecimal"
-    />
-
-</androidx.constraintlayout.widget.ConstraintLayout>-->

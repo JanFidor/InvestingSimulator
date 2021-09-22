@@ -30,19 +30,14 @@ abstract class StockTemplateAdapter<T : StockTemplateRoom, U : StockTemplate>(
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockHolder<T> {
-        val inflater = LayoutInflater.from(parent.context)
-        val binding = RowStockBinding.inflate(inflater, parent, false)
-
-        return StockHolder(binding, fragment, viewModel)
-    }
+    abstract override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StockHolder<T>
 
     override fun onBindViewHolder(holder: StockHolder<T>, position: Int) =
         holder.bind(stockList[position])
 
     override fun getItemCount(): Int = stockList.size
 
-    open inner class StockHolder<T  : StockTemplateRoom>(
+    abstract inner class StockHolder<T  : StockTemplateRoom>(
         protected val binding: RowStockBinding,
         private val fragment: Fragment,
         private val viewModel: ViewModelTemplate<T, U>
@@ -57,7 +52,7 @@ abstract class StockTemplateAdapter<T : StockTemplateRoom, U : StockTemplate>(
             /*TextFormatting.setObservedColor(stock.observed.value ?: false, binding.star)*/
         }
 
-        open fun openGraph(){}
+        abstract fun openGraph()
 
         open fun observe(stock: StockTemplate){}
     }

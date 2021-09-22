@@ -8,7 +8,11 @@
     <string name="bottom_bar_settings">Settings</string>
 
 
-    <string name="decimal">%1$d</string>
+    <string name="text_value_price">%1$.2f $</string>
+    <string name="text_funds_amount">Funds: %1$.2f $</string>
+    <string name="text_share_price">Share price: %1$.2f $</string>
+    <string name="text_price_change">Price change: %1$.2f %%</string>
+    <string name="text_share_amount">Shares: %1$.5f</string>
 
 
 
