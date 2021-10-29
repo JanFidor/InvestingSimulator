@@ -2,6 +2,7 @@ package com.example.investingsimulator.screens.popups
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.investingsimulator.R
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
@@ -33,13 +34,14 @@ class DialogFragmentSell(stock : StockTemplate, viewModel: ViewModelBought, frag
         // TODO if no new day -> get last from last day
 
         transactionValue.postValue(correctValue.toString())
-        transactionAmount.postValue(correctAmount)
+        transactionAmount.postValue(getString(R.string.text_value_amount, correctAmount))
     }
 
     override fun executeTrade() {
-        viewModelBought.sell(stock, transactionAmount.value?.toFloat() ?: 0F)
+        val value = (transactionValue.value?.toFloat() ?: 0F) * stock.last.value!!.toFloat()
+        viewModelBought.sell(stock, transactionValue.value?.toFloat() ?: 0F)
         (sharedPrefs?.edit())?.let {
-            it.putFloat("FUNDS", funds + (transactionValue.value?.toFloat() ?: 0F))
+            it.putFloat("FUNDS", funds + value)
             it.apply()
         }
         this.dismiss()

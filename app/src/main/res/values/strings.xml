@@ -13,6 +13,7 @@
     <string name="text_share_price">Share price: %1$.2f $</string>
     <string name="text_price_change">Price change: %1$.2f %%</string>
     <string name="text_share_amount">Shares: %1$.5f</string>
+    <string name="text_value_amount">Value: %1$.2f $</string>
 
 
 

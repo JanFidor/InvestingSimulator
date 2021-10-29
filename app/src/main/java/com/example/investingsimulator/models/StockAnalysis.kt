@@ -9,10 +9,10 @@ import kotlin.math.round
 
 class StockAnalysis(history: List<DayData>) {
     var volatility: List<String>
-    var deviation: Double
+    var deviation: Float
     val candleData: MutableList<CandleEntry> = mutableListOf()
-    val dateData: List<String> = history.map{it.date.slice(5..9)} ?: listOf()
-    val volumeData: List<Long> = history.map{it.volume} ?: listOf()
+    val dateData: List<String> = history.map{it.date.slice(5..9)}
+    val volumeData: List<Long> = history.map{it.volume ?: 0}
 
     var averageDelta: Float
     var dailyVolatility: Float
@@ -24,8 +24,8 @@ class StockAnalysis(history: List<DayData>) {
         .mapIndexed { index, dayData ->
             CandleEntry(
                 index.toFloat(),
-                dayData.high.toFloat(), dayData.low.toFloat(),
-                dayData.open.toFloat(), dayData.close.toFloat()
+                dayData.high ?: 1f, dayData.low ?: 1f,
+                dayData.open ?: 1f, dayData.close ?: 1f
             )
         }
         .forEach{
@@ -33,13 +33,13 @@ class StockAnalysis(history: List<DayData>) {
         }
 
         val averagePrice = candleData.map{(it.open + it.close) / 2}
-        deviation = averagePrice.standardDeviation()
+        deviation = averagePrice.standardDeviation().toFloat()
         val mean = averagePrice.average()
-        val devs = mutableListOf(0.0, 0.0, 0.0)
+        val devs = mutableListOf(0f, 0f, 0f)
         for(v in averagePrice) {
             for (i in 1..3) {
                 if ((mean - i * deviation) <= v && v <= (mean + i * deviation)) {
-                    devs[i - 1] += 1.0
+                    devs[i - 1] += 1f
                 }
             }
         }
@@ -48,14 +48,4 @@ class StockAnalysis(history: List<DayData>) {
         averageDelta = candleData.map {abs(it.open - it.close) / (it.open + it.close)}.sum() / candleData.size
         dailyVolatility = candleData.map {it.high - it.low / (it.open + it.close)}.sum() / candleData.size
     }
-
-    companion object{
-        /*fun factory(history: Array<DayData>, stocks: String): StockAnalysis{
-            return StockAnalysis(history, stocks)
-        }*/
-    }
-
-
-
-
 }

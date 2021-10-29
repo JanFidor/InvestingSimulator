@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.navArgs
 import com.example.investingsimulator.databinding.FragmentDetailsBinding
 import com.example.investingsimulator.screens.popups.DialogFragmentBuy
@@ -14,7 +15,6 @@ import com.example.investingsimulator.screens.popups.DialogFragmentSell
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
 
 class FragmentStockDetails :  Fragment() {
-
     companion object{
         val STOCK = "stockData"
     }
@@ -22,6 +22,12 @@ class FragmentStockDetails :  Fragment() {
     private val args: FragmentStockDetailsArgs by navArgs()
     protected val viewModelBought: ViewModelBought by activityViewModels()
 
+    val stock by lazy{args.stockData}
+
+    private val canBuy: Boolean
+        get() = stock?.last?.value ?: 0f != 0f
+    private val canSell: Boolean
+        get() = viewModelBought.getAmount(args.stockData?.symbol.toString()) > 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +37,7 @@ class FragmentStockDetails :  Fragment() {
         val binding = FragmentDetailsBinding.inflate(inflater, container, false)
         binding.apply{
             lifecycleOwner = this@FragmentStockDetails.viewLifecycleOwner
-            stock = args.stockData
+            stock = this@FragmentStockDetails.stock
             fragment = this@FragmentStockDetails
         }
         return binding.root
@@ -39,18 +45,23 @@ class FragmentStockDetails :  Fragment() {
 
     fun buy(){
         Log.d("popup", "buy")
-        args.stockData?.let {
-            val fragment = DialogFragmentBuy(it, viewModelBought, this)
-            fragment.show(parentFragmentManager, "BUY")
+        if(canBuy){
+            args.stockData?.let {
+                val fragment = DialogFragmentBuy(it, viewModelBought, this)
+                fragment.show(parentFragmentManager, "BUY")
+            }
         }
-
+        else{}
     }
 
     fun sell(){
         Log.d("popup", "sell")
-        args.stockData?.let {
-            val fragment = DialogFragmentSell(it, viewModelBought, this)
-            fragment.show(parentFragmentManager, "SELL")
+        if(canSell){
+            args.stockData?.let {
+                val fragment = DialogFragmentSell(it, viewModelBought, this)
+                fragment.show(parentFragmentManager, "SELL")
+            }
         }
+        else{}
     }
 }

@@ -87,7 +87,7 @@ class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtR
     }
 
     fun getValue(): Float{
-        return stockAll.map{it.value}.map{it.stockData}.map{it.amount.toFloat() * it.price.toFloat()}.sum()
+        return stockAll.map{it.value}.map{it.stockData.amount.toFloat() * (it.last.value ?: 0f)}.sum()
     }
 
 }

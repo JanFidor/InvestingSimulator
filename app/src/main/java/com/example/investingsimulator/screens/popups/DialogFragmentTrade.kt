@@ -38,7 +38,7 @@ abstract class DialogFragmentTrade(val stock: StockTemplate, protected val viewM
     val change = stock.change.value?.toFloat() ?: 0f
 
     val transactionValue  =  MutableLiveData("0.0")
-    val transactionAmount = MutableLiveData(0f)
+    val transactionAmount = MutableLiveData("")
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

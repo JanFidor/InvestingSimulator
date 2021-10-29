@@ -2,6 +2,7 @@ package com.example.investingsimulator.screens.popups
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.example.investingsimulator.R
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.screens.fragments.FragmentStockDetails
@@ -30,11 +31,12 @@ class DialogFragmentBuy(stock : StockTemplate, viewModel: ViewModelBought, frag:
         val correctAmount = (correctValue / price)
 
         transactionValue.postValue(correctValue.toString())
-        transactionAmount.postValue(correctAmount)
+        transactionAmount.postValue(getString(R.string.text_share_amount, correctAmount))
     }
 
     override fun executeTrade() {
-        viewModelBought.buy(stock, transactionAmount.value?.toFloat() ?: 0F)
+        val amount = (transactionValue.value?.toFloat() ?: 0F) / stock.last.value!!.toFloat()
+        viewModelBought.buy(stock, amount.round(5))
         (sharedPrefs?.edit())?.let {
             it.putFloat("FUNDS", funds - (transactionValue.value?.toFloat() ?: 0F))
             it.apply()
