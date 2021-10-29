@@ -12,8 +12,8 @@ data class QuoteWrapper1(
 
 data class Quote(
     @field:SerializedName("symbol") var symbol: String,
-    @field:SerializedName("description") var description: String,
+    @field:SerializedName("description") var description: String?,
     /*@field:SerializedName("type") var type: String,*/
-    @field:SerializedName("last") var last: Double,
-    @field:SerializedName("change_percentage") var change_percentage: Double,
+    @field:SerializedName("last") var last: Float?,
+    @field:SerializedName("change_percentage") var change_percentage: Float?,
 )

@@ -92,7 +92,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="50dp"
             android:text="Sell"
-            android:clickable="false"
             android:onClick="@{() -> fragment.sell()}"
 
             app:layout_constraintTop_toBottomOf="@+id/text_date"

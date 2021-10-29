@@ -10,6 +10,7 @@ import com.example.investingsimulator.databinding.RowStockBinding
 import com.example.investingsimulator.models.TextFormatting
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
+import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.room.bought.StockBoughtRoom
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 import com.example.investingsimulator.screens.StockTemplateAdapter
@@ -64,6 +65,7 @@ class StockBoughtAdapter (
                     binding.stockData, binding.stockData?.symbol ?: "")
             fragment.findNavController().navigate(action)
         }
+
     }
 
 

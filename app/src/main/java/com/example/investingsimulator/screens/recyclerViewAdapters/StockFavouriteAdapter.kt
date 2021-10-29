@@ -63,8 +63,8 @@ class StockFavouriteAdapter(
         }
 
 
-        override fun observe(s: StockTemplate){
-            val stock = s as StockFavourite
+        override fun observe(stock: StockTemplate){
+            val stock = stock as StockFavourite
             Log.d("click", "click")
             TextFormatting.setObservedColor(stock.observed.value?.not() ?: true, binding.star)
 

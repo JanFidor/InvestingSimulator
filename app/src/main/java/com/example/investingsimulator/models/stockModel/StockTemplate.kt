@@ -17,7 +17,8 @@ import retrofit2.Call
 import retrofit2.Response
 import java.io.Serializable
 
-abstract class StockTemplate(open val stockData: StockTemplateRoom) : Serializable{
+abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
+    abstract val stockData: StockTemplateRoom
     private val _text = MutableLiveData("")
     val text: LiveData<String>
         get() = _text
@@ -25,35 +26,49 @@ abstract class StockTemplate(open val stockData: StockTemplateRoom) : Serializab
     abstract val symbol: String
     abstract val description: String
 
-    private val _change = liveData {
-        val quote = RetrofitInstance.getQuoteS(symbol)
+   /* private val _change = liveData {
+        *//*val quote = RetrofitInstance.getQuoteS(symbol)
         Log.d("stock", "change value")
         _last.postValue(quote?.last ?: 0.0)
-        emit(quote?.change_percentage ?: 0.0)
-    }
+        emit(quote?.change_percentage ?: 0.0)*//*
+        val day = RetrofitInstance.getHistoryDay(symbol, DateIntervals.getCalculatedDate(-2))
+        _last.postValue(day.close)
+        val change = (day.close / day.open) - 1
 
-    val change: LiveData<Double>
+        emit(change)
+    }*/
+
+    private val _change = MutableLiveData(0f)
+    val change: LiveData<Float>
         get() = _change
 
 
-    private val _last = MutableLiveData(0.0)
-    val last: LiveData<Double>
+    private val _last = MutableLiveData(0f)
+    val last: LiveData<Float>
         get() = _last
 
-    private val _data: MutableLiveData<StockAnalysis> by lazy{
-        Log.d("access", symbol)
+    private val _data: MutableLiveData<StockAnalysis?> = MutableLiveData(null)
+    val data: LiveData<StockAnalysis?> = _data
+
+    init{
+        Log.d("access", stock.symbol)
         val end = DateIntervals.getCalculatedDate(-1)
         val start = DateIntervals.getCalculatedDate(-31)
-        val observable = RetrofitInstance.getHistory(stockData.symbol, start, end)
+        val observable = RetrofitInstance.getHistory(stock.symbol, start, end)
 
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy {
-                _data.value = StockAnalysis(it)
-            }
-
-        MutableLiveData(null)
+            .subscribe({
+                if (it.isNotEmpty()) {
+                    val open = it.first().open ?: 1f
+                    val close = it.last().close ?: 1f
+                    Log.d("history_api", "$open   $close")
+                    _change.value = ((close / open) - 1) * 100
+                    _last.value = it.last().close
+                    _data.value = StockAnalysis(it)
+                }
+           }, {Log.e("api error", it.message.toString())})
     }
-    val data: LiveData<StockAnalysis> by lazy{ _data}
+
 }
