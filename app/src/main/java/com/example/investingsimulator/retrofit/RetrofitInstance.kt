@@ -10,7 +10,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val TOKEN = "kGMhlocUonPNYwHKWL72zSqN8fQJ "
+    private const val TOKEN = "token "
     private const val URL = "https://sandbox.tradier.com/"
 
     private val okHttp = OkHttpClient.Builder()
