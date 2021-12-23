@@ -3,19 +3,15 @@ package com.example.investingsimulator.models.stockModel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import com.example.investingsimulator.room.templates.StockTemplateRoom
-import com.example.investingsimulator.models.DateIntervals
 import com.example.investingsimulator.models.StockAnalysis
-import com.example.investingsimulator.models.TextFormatting
+import com.example.investingsimulator.models.getCalculatedDate
 import com.example.investingsimulator.retrofit.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.*
-import retrofit2.Call
-import retrofit2.Response
 import java.io.Serializable
+
 
 abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
     abstract val stockData: StockTemplateRoom
@@ -40,23 +36,41 @@ abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
 
     init{
         Log.d("access", stock.symbol)
-        val end = DateIntervals.getCalculatedDate(-1)
-        val start = DateIntervals.getCalculatedDate(-31)
-        val observable = RetrofitInstance.getHistory(stock.symbol, start, end)
+        val observable = initializeStockHistoryObservable(stock.symbol)
 
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                if (it.isNotEmpty()) {
-                    val open = it.first().open ?: 1f
-                    val close = it.last().close ?: 1f
-                    Log.d("history_api", "$open   $close")
-                    _change.value = ((close / open) - 1) * 100
-                    _last.value = it.last().close
-                    _data.value = StockAnalysis(it)
-                }
-           }, {Log.e("api error", it.message.toString())})
+            .subscribe({interpretStockHistory(it)}, {Log.e("api error", it.message.toString())})
     }
+
+
+    private fun initializeStockHistoryObservable(stockSymbol: String): Observable<List<DayData>> {
+        val end = getCalculatedDate(-1)
+        val start = getCalculatedDate(-31)
+
+        return RetrofitInstance.getHistory(stockSymbol, start, end)
+    }
+
+    private fun interpretStockHistory(stockHistory: List<DayData>){
+        if (stockHistory.isEmpty()) return
+        val (open, close) = getStockEdgeValues(stockHistory)
+        assignPropertyValues(stockHistory, open, close)
+    }
+
+    private fun getStockEdgeValues(stockHistory: List<DayData>): Pair<Float, Float>{
+        val open = stockHistory.first().open ?: 1f
+        val close = stockHistory.last().close ?: 1f
+
+        return Pair(open, close)
+    }
+
+    private fun assignPropertyValues(stockHistory: List<DayData>, open: Float, close: Float){
+        _change.value = ((close / open) - 1) * 100
+        _last.value = stockHistory.last().close
+        _data.value = StockAnalysis(stockHistory)
+    }
+
+
 
 }

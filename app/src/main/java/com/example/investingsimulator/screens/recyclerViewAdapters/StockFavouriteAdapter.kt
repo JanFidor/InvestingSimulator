@@ -14,7 +14,6 @@ import com.example.investingsimulator.screens.StockTemplateAdapter
 import com.example.investingsimulator.screens.fragments.FragmentStockFavourite
 import com.example.investingsimulator.screens.fragments.FragmentStockFavouriteDirections
 import com.example.investingsimulator.screens.viewModels.ViewModelFavourite
-import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 
 class StockFavouriteAdapter(
     stockList: List<StockFavourite>,
@@ -82,7 +81,7 @@ class StockFavouriteAdapter(
                 viewModel.add(stock.getCore())
             }
 
-            stock.changeObserved()
+            stock.changeObservedStatus()
 
             }
         }
