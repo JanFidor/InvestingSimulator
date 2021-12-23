@@ -41,7 +41,10 @@ abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({interpretStockHistory(it)}, {Log.e("api error", it.message.toString())})
+            .subscribe(
+                {interpretStockHistory(it)},
+                {Log.e("api error", it.message.toString())}
+            )
     }
 
 
