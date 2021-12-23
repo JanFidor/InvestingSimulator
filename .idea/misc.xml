@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/layout/fragment_details.xml" value="0.25407608695652173" />
         <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/layout/fragment_list_bought.xml" value="0.25407608695652173" />
         <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/layout/fragment_stock_list.xml" value="0.25407608695652173" />
+        <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/layout/graph_stock.xml" value="0.25407608695652173" />
         <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/layout/row_bought.xml" value="0.25407608695652173" />
         <entry key="..\:/Users/Janek/StudioProjects/InvestingSimulator/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.13020833333333334" />
       </map>

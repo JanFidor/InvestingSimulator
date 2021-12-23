@@ -9,6 +9,7 @@ import androidx.databinding.BindingMethod
 import androidx.databinding.BindingMethods
 import com.example.investingsimulator.models.CustomGraphFormatter
 import com.example.investingsimulator.models.StockAnalysis
+import com.example.investingsimulator.screens.GraphDataBindingAdapter.Companion.setDefaultCandleStyle
 import com.github.mikephil.charting.charts.CandleStickChart
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.CandleData
@@ -41,43 +42,23 @@ class GraphDataBindingAdapter{
 
             val values = stockAnalysis.candleData
 
-            /*for(v in values) Log.d("candle", "${v.open}   ${v.close}")*/
-
-            /*val set = CandleDataSet(values, stockAnalysis.stockName)*/
             val set = CandleDataSet(values, "")
 
-            set.isHighlightEnabled = true
-            set.setDrawIcons(false)
-            set.axisDependency = YAxis.AxisDependency.LEFT
-            set.color = Color.rgb(80, 80, 80)
-            set.shadowColor = Color.DKGRAY
-            set.shadowWidth = 2f
-            set.decreasingColor = Color.RED
-            set.decreasingPaintStyle = Paint.Style.FILL
-            set.increasingPaintStyle = Paint.Style.FILL
-            /*set.increasingColor = Color.rgb(122, 242, 84)*/
-            set.increasingColor = Color.GREEN
-            set.neutralColor = Color.BLUE
+            set.setDefaultBackgroundStyle()
+            set.setDefaultCandleStyle()
             set.setDrawValues(false)
 
-            /*view.description.textColor = Color.GRAY
-            view.description.textSize = 12f
-            view.description.text = stockAnalysis.stockName*/
 
             var t: Toast? = null
 
+
             view.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
-                    with(e as CandleEntry){
+                    (e as CandleEntry).let{
                         t?.cancel()
                         t = Toast.makeText(
                             view.context,
-                            "open: $open \n" +
-                                "close: $close \n" +
-                                "high: $high \n" +
-                                "low: $low \n" +
-                                "volume: ${stockAnalysis.volumeData[x.toInt()]} \n" +
-                                "date: ${stockAnalysis.dateData[x.toInt()]}",
+                            formatToastString(e, stockAnalysis),
                             Toast.LENGTH_LONG
                         )
                         t?.setGravity(Gravity.TOP, 0, 300)
@@ -92,15 +73,47 @@ class GraphDataBindingAdapter{
             view.legend.isEnabled = false
             view.description.isEnabled = false
 
-            view.isScaleXEnabled = false
-            view.isScaleYEnabled = false
-            view.axisRight.setDrawLabels(false)
-            view.axisLeft.textColor = Color.GRAY
-            view.xAxis.textColor = Color.GRAY
+            view.setDefaultAxisStyle()
             view.xAxis.valueFormatter = CustomGraphFormatter(stockAnalysis.dateData)
             val data1 = CandleData(set)
             view.data = data1
             view.invalidate()
+        }
+
+        private fun formatToastString(candleEntry: CandleEntry, stockAnalysis: StockAnalysis): String{
+            return with(candleEntry){
+                    "open: $open \n" +
+                    "close: $close \n" +
+                    "high: $high \n" +
+                    "low: $low \n" +
+                    "volume: ${stockAnalysis.volumeData[x.toInt()]} \n" +
+                    "date: ${stockAnalysis.dateData[x.toInt()]}"
+                }
+        }
+
+        private fun CandleStickChart.setDefaultAxisStyle(){
+            this.isScaleXEnabled = false
+            this.isScaleYEnabled = false
+            this.axisRight.setDrawLabels(false)
+            this.axisLeft.textColor = Color.GRAY
+            this.xAxis.textColor = Color.GRAY
+        }
+
+        private fun CandleDataSet.setDefaultBackgroundStyle(){
+            this.isHighlightEnabled = true
+            this.setDrawIcons(false)
+            this.axisDependency = YAxis.AxisDependency.LEFT
+            this.color = Color.rgb(80, 80, 80)
+            this.shadowColor = Color.DKGRAY
+            this.shadowWidth = 2f
+        }
+
+        private fun CandleDataSet.setDefaultCandleStyle(){
+            this.decreasingColor = Color.RED
+            this.decreasingPaintStyle = Paint.Style.FILL
+            this.increasingPaintStyle = Paint.Style.FILL
+            this.increasingColor = Color.GREEN
+            this.neutralColor = Color.BLUE
         }
     }
 }
