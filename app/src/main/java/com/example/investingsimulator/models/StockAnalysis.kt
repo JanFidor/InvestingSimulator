@@ -1,10 +1,7 @@
 package com.example.investingsimulator.models
 
-import com.example.investingsimulator.retrofit.DayData
+import com.example.investingsimulator.retrofit.modelsJSON.DayData
 import com.github.mikephil.charting.data.CandleEntry
-import org.nield.kotlinstatistics.standardDeviation
-import kotlin.math.abs
-import kotlin.math.round
 
 
 class StockAnalysis(history: List<DayData>) {

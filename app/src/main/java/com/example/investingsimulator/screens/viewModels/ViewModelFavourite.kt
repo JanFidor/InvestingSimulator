@@ -8,7 +8,7 @@ import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.retrofit.RetrofitInstance
-import com.example.investingsimulator.retrofit.SymbolData
+import com.example.investingsimulator.retrofit.modelsJSON.SymbolData
 import com.example.investingsimulator.room.favourite.RepositoryFavouriteRoom
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers

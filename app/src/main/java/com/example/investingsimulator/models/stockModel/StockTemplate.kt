@@ -7,6 +7,7 @@ import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.models.StockAnalysis
 import com.example.investingsimulator.models.getCalculatedDate
 import com.example.investingsimulator.retrofit.*
+import com.example.investingsimulator.retrofit.modelsJSON.DayData
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
