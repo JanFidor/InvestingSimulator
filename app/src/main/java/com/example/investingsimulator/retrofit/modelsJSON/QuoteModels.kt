@@ -1,19 +1,17 @@
-package com.example.investingsimulator.retrofit
+package com.example.investingsimulator.retrofit.modelsJSON
 
-import com.google.gson.annotations.SerializedName
 
 data class QuoteWrapper2(
-    @field:SerializedName("quotes") var quotes: QuoteWrapper1,
+    val quotes: QuoteWrapper1,
     )
 
 data class QuoteWrapper1(
-    @field:SerializedName("quote") var quote: Quote
+    val quote: Quote
 )
 
 data class Quote(
-    @field:SerializedName("symbol") var symbol: String,
-    @field:SerializedName("description") var description: String?,
-    /*@field:SerializedName("type") var type: String,*/
-    @field:SerializedName("last") var last: Float?,
-    @field:SerializedName("change_percentage") var change_percentage: Float?,
+    val symbol: String,
+    val description: String?,
+    val last: Float?,
+    val change_percentage: Float?,
 )

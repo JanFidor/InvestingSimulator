@@ -1,30 +1,29 @@
-package com.example.investingsimulator.retrofit
-
+package com.example.investingsimulator.retrofit.modelsJSON
 
 import com.example.investingsimulator.room.templates.StockTemplateRoom
-import com.google.gson.annotations.SerializedName
+
 
 interface SymbolInterface
 
 
 data class SymbolWrapper2(
-    @field:SerializedName("securities") var securities: SymbolWrapper1,
+    val securities: SymbolWrapper1,
 ) : SymbolInterface
 
 data class SymbolWrapper1(
-    @field:SerializedName("security") var security: SymbolData,
+    val security: SymbolData,
 )
 
 data class SymbolsWrapper2(
-    @field:SerializedName("securities") var securities: SymbolsWrapper1,
+    val securities: SymbolsWrapper1,
 ) : SymbolInterface
 
 data class SymbolsWrapper1(
-    @field:SerializedName("security") var security: Array<SymbolData>,
+    val security: Array<SymbolData>,
 )
 
 data class SymbolData(
-    @field:SerializedName("symbol") override var symbol: String,
-    @field:SerializedName("description") override var description: String?
+    override val symbol: String,
+    override val description: String?
 ) : StockTemplateRoom()
 
