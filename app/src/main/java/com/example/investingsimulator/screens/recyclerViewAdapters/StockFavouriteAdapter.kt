@@ -74,11 +74,11 @@ class StockFavouriteAdapter(
                     Toast.LENGTH_SHORT
                 ).show()
 
-                viewModel.delete(stock.getCore())
+                viewModel.deleteStock(stock.getCore())
             } else {
                 Toast.makeText(binding.root.context, "added ${stock.symbol} to observed", Toast.LENGTH_SHORT)
                     .show()
-                viewModel.add(stock.getCore())
+                viewModel.addStock(stock.getCore())
             }
 
             stock.changeObservedStatus()

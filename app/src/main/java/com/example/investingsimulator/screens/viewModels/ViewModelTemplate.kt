@@ -1,7 +1,6 @@
 package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -23,23 +22,28 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
 
     protected var searched: String = ""
 
-    protected open fun filterStock(): List<U> {
-        val list = stockAll
-            .map { it.value }
-            .filter {
-                it.symbol.length >= (searched.length) &&
-                it.symbol.slice(searched.indices)  == searched
-        }
+    protected open fun filterSavedStocks(): List<U> {
+        val list = getSearchedSavedStocks()
         _stockVisible.postValue(list)
         return list
     }
 
-    abstract fun add(stock: T)
-    abstract fun delete(stock: T)
+    private fun getSearchedSavedStocks(): List<U>{
+        return stockAll.values.filter {isStockSearched(it)}
+    }
 
+    private fun isStockSearched(stock: U): Boolean{
+        val correctLength = stock.symbol.length >= (searched.length)
+        val correctSymbol = stock.symbol.slice(searched.indices)  == searched
+
+        return correctSymbol && correctLength
+    }
+
+    abstract fun addStock(stock: T)
+    abstract fun deleteStock(stock: T)
     fun updateSearch(query: String){
         searched = query.uppercase()
-        filterStock()
+        filterSavedStocks()
     }
 
     fun getSize(): Int = stockAll.size

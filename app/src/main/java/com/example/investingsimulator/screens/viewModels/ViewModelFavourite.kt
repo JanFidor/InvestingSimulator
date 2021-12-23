@@ -18,78 +18,86 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
 
     override val stockAll: MutableMap<String, StockFavourite>
             by lazy {
-                val map = mutableMapOf<String, StockFavourite>()
-                repository.getAll().forEach {
-                    Log.d("stock", it.toString())
-                    map[it.symbol] = StockFavourite(it, true)
-                }
-                map}
+                repository
+                    .getAll()
+                    .map{it.symbol to StockFavourite(it, true)}
+                    .toMap()
+                    .toMutableMap()
+            }
 
-    val temporaryCache: MutableMap<String, StockFavourite> = mutableMapOf()
+    private val temporaryCache: MutableMap<String, StockFavourite> = mutableMapOf()
 
-    private val disposable = CompositeDisposable()
+    private val compositeDisposable = CompositeDisposable()
 
-    fun parse(obs: Observable<List<SymbolData>>): Observable<List<StockFavourite>> {
-        return obs
-            .map { it.filter { it.symbol !in stockAll } }
-            .map{
-                it.take(min(20, it.size))}
-            .map {list ->
-                list.map {
-                        symbolData -> StockFavouriteRoom(symbolData.symbol, symbolData.description ?: "")}}
-            .map { list -> list.map {stock ->
-                if(stock.symbol !in temporaryCache) temporaryCache[stock.symbol] = StockFavourite(stock, false)
-                temporaryCache[stock.symbol]!!}}
+
+    private fun Observable<List<SymbolData>>
+            .processStockSymbolsToStockModels(): Observable<StockFavourite>{
+
+        return this
+            .take(20)
+            .flatMap {Observable.fromIterable(it)}
+            .filter{stockSymbol -> stockSymbol.symbol !in stockAll}
+            .map{symbolData -> StockFavouriteRoom(
+                symbolData.symbol, symbolData.description ?: "")}
+            .map {stock -> StockFavourite(stock, false)}
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun getObservables(list: List<StockFavourite>){
-        val obs = RetrofitInstance.getSearchedStocks(searched)
-        val dis = parse(obs).subscribe (
-            { Log.d("call", "1   $list   $it")
-                _stockVisible.postValue(list.plus(it))
-            }, {getObservable(list)})
+    private fun getStockSymbols(list: List<StockFavourite>){
+        val disposable = RetrofitInstance
+            .getSearchedStocks(searched)
+            .processStockSymbolsToStockModels()
+            .subscribe(
+            {stockFavourite ->
+                if(stockFavourite.symbol !in temporaryCache) {
+                    temporaryCache[stockFavourite.symbol] = stockFavourite
+                }
+                _stockVisible.postValue(list.plus(stockFavourite))},
+            {getStockSymbol(list)}
+        )
 
-        disposable.add(dis)
+        compositeDisposable.add(disposable)
     }
 
-    private fun getObservable(list: List<StockFavourite>){
-        val obs = RetrofitInstance.getSearchedStock(searched)
-        val dis = parse(obs).subscribe(
-            { Log.d("call", "2  $list   $it")
-                _stockVisible.postValue(list.plus(it)) }, {})
-        disposable.add(dis)
+    private fun getStockSymbol(list: List<StockFavourite>){
+        val disposable = RetrofitInstance
+            .getSearchedStock(searched)
+            .processStockSymbolsToStockModels()
+            .subscribe(
+            {_stockVisible.postValue(list.plus(it)) },
+            {e -> Log.e("Get single stock symbol", e.message.toString())}
+        )
+        compositeDisposable.add(disposable)
     }
 
-    override fun filterStock(): List<StockFavourite> {
-
-        val list = super.filterStock()
-        Log.d("call", "list: $list")
-        if(searched != "") getObservables(list)
+    override fun filterSavedStocks(): List<StockFavourite> {
+        val list = super.filterSavedStocks()
+        if(searched != "") getStockSymbols(list)
         return list
     }
 
-    override fun add(stock: StockFavouriteRoom) {
+    override fun addStock(stock: StockFavouriteRoom) {
         repository.create(stock)
-        val stock: StockFavourite? = temporaryCache[stock.symbol]
-        stock?.let{
+        val stockModel: StockFavourite? = temporaryCache[stock.symbol]
+
+        stockModel?.let{
             stockAll[it.symbol] = it
             temporaryCache.remove(it.symbol)
         }
-
     }
 
-    override fun delete(stock: StockFavouriteRoom) {
+    override fun deleteStock(stock: StockFavouriteRoom) {
         repository.delete(stock)
-        val stock: StockFavourite? = stockAll[stock.symbol]
-        stock?.let{
+        val stockModel: StockFavourite? = stockAll[stock.symbol]
+
+        stockModel?.let{
             temporaryCache[it.symbol] = it
             stockAll.remove(it.symbol)
         }
     }
 
     fun clear(){
-        disposable.clear()
+        compositeDisposable.clear()
     }
 }
