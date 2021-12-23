@@ -1,6 +1,5 @@
 package com.example.investingsimulator.retrofit
 
-import android.util.Log
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Interceptor
@@ -10,7 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object RetrofitInstance {
-    private const val TOKEN = "token "
+    private const val TOKEN = "R6vMuvLo20ZMScWN6VvvGfTw4Lzn"
     private const val URL = "https://sandbox.tradier.com/"
 
     private val okHttp = OkHttpClient.Builder()
@@ -39,15 +38,6 @@ object RetrofitInstance {
 
     val InterfaceAPI: TestRetrofit = retrofit.create(TestRetrofit::class.java)
 
-    fun getQuote(symbol: String): Observable<Quote?>{
-        return InterfaceAPI.getQuote(symbol)
-            .map{RetrofitParser.getQuote(it)}
-    }
-
-    suspend fun getQuoteS(symbol: String): Quote?{
-        return RetrofitParser.getQuote(InterfaceAPI.getQuoteS(symbol))
-    }
-
     fun getHistory(symbols: String, start: String, end: String)
     :Observable<List<DayData>> = InterfaceAPI.getHistory(symbols, start, end).map{RetrofitParser.getHistory(it)}
 
@@ -58,11 +48,4 @@ object RetrofitInstance {
     fun getSearchedStock(search: String): Observable<List<SymbolData>>{
         return InterfaceAPI.getSymbol(search).map{RetrofitParser.getSymbol(it)}
     }
-
-    suspend fun getHistoryDay(search: String, day: String,): DayData{
-        val day = InterfaceAPI.getDay(search, day, day).history.day
-        Log.d("api", day.toString())
-        return day
-    }
-
 }

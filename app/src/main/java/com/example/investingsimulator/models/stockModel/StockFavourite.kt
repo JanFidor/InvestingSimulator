@@ -31,6 +31,4 @@ class StockFavourite (override val stockData: StockFavouriteRoom, observe: Boole
         get() = stockData.symbol
     override val description: String
         get() = stockData.description
-
-    /*override val stockData = stockData as StockFavouriteRoom*/
 }

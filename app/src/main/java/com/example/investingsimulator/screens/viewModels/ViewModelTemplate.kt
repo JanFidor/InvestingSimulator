@@ -35,6 +35,7 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
                 it.symbol.slice(searched.indices)  == searched
         }
         _stockVisible.postValue(list)
+        Log.d("updated search 2", list.toString())
         return list
     }
 
@@ -42,6 +43,7 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
     abstract fun delete(stock: T)
     fun updateSearch(query: String){
         searched = query.uppercase()
+        Log.d("update search 1", "")
         filterStock()
     }
 
