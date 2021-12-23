@@ -11,9 +11,4 @@ data class StockBoughtRoom(
     override val description: String,
     var amount: Double,
     var price: Double,
-    ) : StockTemplateRoom() {
-    fun buy(amount: Double, price: Double){
-        this.price = ((amount * price) + (this.amount * this.price)) / (amount + this.amount)
-        this.amount = (amount + this.amount)
-    }
-}
+    ) : StockTemplateRoom()

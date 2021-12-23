@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 
+
 @Entity(tableName = "favourite_stock_database")
 data class StockFavouriteRoom(
     @PrimaryKey(autoGenerate = false)
