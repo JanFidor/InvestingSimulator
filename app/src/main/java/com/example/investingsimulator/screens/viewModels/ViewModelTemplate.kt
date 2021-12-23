@@ -5,15 +5,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.room.templates.RepositoryTemplateRoom
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.models.stockModel.StockTemplate
 
 abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(application: Application) : AndroidViewModel(application) {
-    //private val _repository = RecipeRepository(application)
 
-    protected open val _repository by lazy {RepositoryTemplateRoom<T>(application)}
+    protected open val repository by lazy {RepositoryTemplateRoom<T>(application)}
 
     protected abstract val stockAll: MutableMap<String, U>
 
@@ -25,8 +23,6 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
 
     protected var searched: String = ""
 
-    protected open fun getFiltered(): List<U> = stockAll.map { it.value }
-
     protected open fun filterStock(): List<U> {
         val list = stockAll
             .map { it.value }
@@ -35,15 +31,14 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
                 it.symbol.slice(searched.indices)  == searched
         }
         _stockVisible.postValue(list)
-        Log.d("updated search 2", list.toString())
         return list
     }
 
     abstract fun add(stock: T)
     abstract fun delete(stock: T)
+
     fun updateSearch(query: String){
         searched = query.uppercase()
-        Log.d("update search 1", "")
         filterStock()
     }
 

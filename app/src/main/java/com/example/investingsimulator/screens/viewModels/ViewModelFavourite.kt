@@ -2,33 +2,24 @@ package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
-import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.retrofit.RetrofitInstance
 import com.example.investingsimulator.retrofit.modelsJSON.SymbolData
 import com.example.investingsimulator.room.favourite.RepositoryFavouriteRoom
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.rx3.rxSingle
-import java.lang.IllegalStateException
 import java.lang.Integer.min
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 open class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavouriteRoom, StockFavourite>(application) {
-    override val _repository = RepositoryFavouriteRoom(application)
+    override val repository = RepositoryFavouriteRoom(application)
 
     override val stockAll: MutableMap<String, StockFavourite>
             by lazy {
                 val map = mutableMapOf<String, StockFavourite>()
-                _repository.getAll().forEach {
+                repository.getAll().forEach {
                     Log.d("stock", it.toString())
                     map[it.symbol] = StockFavourite(it, true)
                 }
@@ -72,20 +63,15 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
     }
 
     override fun filterStock(): List<StockFavourite> {
+
         val list = super.filterStock()
         Log.d("call", "list: $list")
         if(searched != "") getObservables(list)
         return list
     }
 
-    override fun getFiltered(): List<StockFavourite>{
-        val list = (super.getFiltered()).filter { it.observed.value ?: false }
-        Log.d("saved", list.size.toString())
-        return list
-    }
-
     override fun add(stock: StockFavouriteRoom) {
-        _repository.create(stock)
+        repository.create(stock)
         val stock: StockFavourite? = temporaryCache[stock.symbol]
         stock?.let{
             stockAll[it.symbol] = it
@@ -95,7 +81,7 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
     }
 
     override fun delete(stock: StockFavouriteRoom) {
-        _repository.delete(stock)
+        repository.delete(stock)
         val stock: StockFavourite? = stockAll[stock.symbol]
         stock?.let{
             temporaryCache[it.symbol] = it
