@@ -3,23 +3,14 @@ package com.example.investingsimulator.screens.recyclerViewAdapters
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
-import com.example.investingsimulator.databinding.RowBoughtBinding
 import com.example.investingsimulator.databinding.RowStockBinding
-import com.example.investingsimulator.models.TextFormatting
 import com.example.investingsimulator.models.stockModel.StockBought
-import com.example.investingsimulator.models.stockModel.StockFavourite
-import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.room.bought.StockBoughtRoom
-import com.example.investingsimulator.room.favourite.StockFavouriteRoom
-import com.example.investingsimulator.screens.StockTemplateAdapter
 import com.example.investingsimulator.screens.fragments.FragmentStockBought
 import com.example.investingsimulator.screens.fragments.FragmentStockBoughtDirections
-import com.example.investingsimulator.screens.fragments.FragmentStockFavourite
-import com.example.investingsimulator.screens.fragments.FragmentStockFavouriteDirections
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
-import com.example.investingsimulator.screens.viewModels.ViewModelFavourite
+
 
 class StockBoughtAdapter (
     stockList: List<StockBought>,
@@ -59,7 +50,6 @@ class StockBoughtAdapter (
         }
 
         override fun openGraph() {
-            Log.d("nav", "nav")
             val action = FragmentStockBoughtDirections
                 .actionWalletFragmentToFragmentStockDetails(
                     binding.stockData, binding.stockData?.symbol ?: "")

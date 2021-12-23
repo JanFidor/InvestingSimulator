@@ -3,9 +3,7 @@ package com.example.investingsimulator.screens.fragments
 import androidx.fragment.app.activityViewModels
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.room.bought.StockBoughtRoom
-import com.example.investingsimulator.screens.StockTemplateAdapter
 import com.example.investingsimulator.screens.recyclerViewAdapters.StockBoughtAdapter
-import com.example.investingsimulator.screens.recyclerViewAdapters.StockFavouriteAdapter
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
 
 class FragmentStockBought : FragmentStockTemplate<StockBoughtRoom, StockBought>() {
