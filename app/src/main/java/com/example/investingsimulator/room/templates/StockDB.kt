@@ -19,24 +19,31 @@ abstract class StockDB : RoomDatabase() {
         @Volatile
         private var INSTANCE: StockDB? = null
 
+        private fun createStockDBBuilder(context: Context): Builder<StockDB>{
+            return Room.databaseBuilder(
+                context.applicationContext,
+                StockDB::class.java,
+                "stock_db"
+            )
+        }
+
+        private fun initializeStockDBInstance(context: Context): StockDB{
+            return createStockDBBuilder(context)
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+
         fun getInstance(context: Context): StockDB {
             synchronized(this) {
                 var instance = INSTANCE
 
                 if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        StockDB::class.java,
-                        "stock_db"
-                    )
-                        .allowMainThreadQueries()
-                        .fallbackToDestructiveMigration()
-                        .build()
+                    instance = initializeStockDBInstance(context)
                     INSTANCE = instance
                 }
                 return instance
             }
         }
     }
-
 }
