@@ -51,7 +51,6 @@ class FragmentStockDetails :  Fragment() {
                 fragment.show(parentFragmentManager, "BUY")
             }
         }
-        else{}
     }
 
     fun sell(){
@@ -62,6 +61,5 @@ class FragmentStockDetails :  Fragment() {
                 fragment.show(parentFragmentManager, "SELL")
             }
         }
-        else{}
     }
 }

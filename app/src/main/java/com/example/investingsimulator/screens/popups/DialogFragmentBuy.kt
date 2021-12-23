@@ -1,15 +1,11 @@
 package com.example.investingsimulator.screens.popups
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.investingsimulator.R
-import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.screens.fragments.FragmentStockDetails
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
-import java.lang.Math.round
 import kotlin.math.min
-import kotlin.math.roundToInt
 
 class DialogFragmentBuy(stock : StockTemplate, viewModel: ViewModelBought, frag: FragmentStockDetails) : DialogFragmentTrade(stock, viewModel, frag) {
     override val tradeType: String

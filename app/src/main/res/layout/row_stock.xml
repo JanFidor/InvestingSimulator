@@ -8,7 +8,7 @@
 
         <variable
             name="stockHolder"
-            type="com.example.investingsimulator.screens.StockTemplateAdapter.StockHolder" />
+            type="com.example.investingsimulator.screens.recyclerViewAdapters.StockTemplateAdapter.StockHolder" />
 
         <import type="com.example.investingsimulator.models.TextFormatting"/>
     </data>

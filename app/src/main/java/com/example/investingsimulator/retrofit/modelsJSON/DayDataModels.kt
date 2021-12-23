@@ -1,4 +1,4 @@
-package com.example.investingsimulator.retrofit
+package com.example.investingsimulator.retrofit.modelsJSON
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,22 +1,10 @@
 package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.investingsimulator.models.stockModel.StockBought
-import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
-import com.example.investingsimulator.retrofit.RetrofitInstance
 import com.example.investingsimulator.room.bought.RepositoryBoughtRoom
 import com.example.investingsimulator.room.bought.StockBoughtRoom
-import com.example.investingsimulator.room.favourite.RepositoryFavouriteRoom
-import com.example.investingsimulator.room.favourite.StockFavouriteRoom
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtRoom, StockBought>(application) {
     override val _repository = RepositoryBoughtRoom(application)
@@ -47,13 +35,13 @@ class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtR
         filterStock()
     }
 
-    fun getAmount(stockName: String): Float = stockAll[stockName]?.stockData?.amount?.toFloat() ?: 0F
+    fun getAmount(stockName: String): Float = stockAll[stockName]?.stock?.amount?.toFloat() ?: 0F
 
 
     fun buy(stock: StockTemplate, amount: Float){
         val symbol = stock.symbol
         val description = stock.description
-        val amount = amount.toDouble() + (stockAll[stock.symbol]?.stockData?.amount ?: 0.0)
+        val amount = amount.toDouble() + (stockAll[stock.symbol]?.stock?.amount ?: 0.0)
 
         // TODO PRICE
         val price = 0.0
@@ -72,7 +60,7 @@ class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtR
     fun sell(stock: StockTemplate, amount: Float){
         val symbol = stock.symbol
         val description = stock.description
-        val amount = (stockAll[stock.symbol]?.stockData?.amount ?: 0.0) - amount.toDouble()
+        val amount = (stockAll[stock.symbol]?.stock?.amount ?: 0.0) - amount.toDouble()
 
         // TODO PRICE
         val price = 0.0
@@ -87,7 +75,7 @@ class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtR
     }
 
     fun getValue(): Float{
-        return stockAll.map{it.value}.map{it.stockData.amount.toFloat() * (it.last.value ?: 0f)}.sum()
+        return stockAll.map{it.value}.map{it.stock.amount.toFloat() * (it.last.value ?: 0f)}.sum()
     }
 
 }

@@ -46,7 +46,7 @@ abstract class DialogFragmentTrade(val stock: StockTemplate, protected val viewM
 
         binding = FragmentListBoughtBinding.inflate(inflater, container, false)
 
-        // Beautiful magic scroll that removes addition background for window UI
+        // Beautiful magic scroll that removes additional background for window UI
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         transactionValue.observe(viewLifecycleOwner, ::observeValue)
 

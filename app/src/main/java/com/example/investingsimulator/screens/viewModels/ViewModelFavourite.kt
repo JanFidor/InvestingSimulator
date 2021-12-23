@@ -2,25 +2,16 @@ package com.example.investingsimulator.screens.viewModels
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
-import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.retrofit.RetrofitInstance
-import com.example.investingsimulator.retrofit.SymbolData
+import com.example.investingsimulator.retrofit.modelsJSON.SymbolData
 import com.example.investingsimulator.room.favourite.RepositoryFavouriteRoom
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.annotations.NonNull
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.coroutines.rx3.rxSingle
-import java.lang.IllegalStateException
 import java.lang.Integer.min
-import java.util.*
-import java.util.concurrent.TimeUnit
 
 open class ViewModelFavourite(application: Application) : ViewModelTemplate<StockFavouriteRoom, StockFavourite>(application) {
     override val _repository = RepositoryFavouriteRoom(application)

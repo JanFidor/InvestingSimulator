@@ -21,22 +21,28 @@ abstract class StockDB : RoomDatabase() {
 
         fun getInstance(context: Context): StockDB {
             synchronized(this) {
-                var instance = INSTANCE
+                assignSingletonValue(context)
 
-                if (instance == null) {
-                    instance = Room.databaseBuilder(
-                        context.applicationContext,
-                        StockDB::class.java,
-                        "stock_db"
-                    )
-                        .allowMainThreadQueries()
-                        .fallbackToDestructiveMigration()
-                        .build()
-                    INSTANCE = instance
-                }
-                return instance
+                // assignSingletonValue() makes sure it's not null
+                return INSTANCE!!
             }
         }
+
+        private fun initializeStockDB(context: Context): StockDB {
+            val stockDB = Room.databaseBuilder(context, StockDB::class.java, "stock_db")
+            return stockDB
+                .allowMainThreadQueries()
+                .fallbackToDestructiveMigration()
+                .build()
+        }
+
+        private fun assignSingletonValue(context: Context){
+            if (INSTANCE == null){
+                INSTANCE = initializeStockDB(context.applicationContext)
+            }
+        }
+
+
     }
 
 }

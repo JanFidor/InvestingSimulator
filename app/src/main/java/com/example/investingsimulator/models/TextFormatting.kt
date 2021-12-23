@@ -1,9 +1,7 @@
 package com.example.investingsimulator.models
 
 import android.graphics.Color
-import android.util.Log
 import android.widget.ImageView
-import androidx.annotation.ColorInt
 import androidx.core.content.ContextCompat
 import com.example.investingsimulator.R
 
@@ -19,8 +17,7 @@ object TextFormatting {
     }
 
     @JvmStatic
-    fun getPercentText(change: Double):String{
-
+    fun getPercentText(change: Double): String {
         val s = "${"%.2f".format(change)}%"
         return when {
             change == 0.0 -> ""

@@ -1,18 +1,8 @@
 package com.example.investingsimulator
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import com.example.investingsimulator.models.StockAnalysis
-import com.example.investingsimulator.retrofit.DayData
-import com.example.investingsimulator.retrofit.RetrofitInstance
-import com.example.investingsimulator.retrofit.RetrofitParser
-import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
+import com.example.investingsimulator.retrofit.modelsJSON.DayData
 import org.junit.Rule
-import org.junit.Test
-import org.junit.rules.TestRule
-import org.junit.runner.RunWith
 
 
 class UnitTestHistory {

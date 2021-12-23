@@ -1,8 +1,6 @@
 package com.example.investingsimulator.retrofit
 
-import android.util.Log
-import retrofit2.Call
-import retrofit2.Response
+import com.example.investingsimulator.retrofit.modelsJSON.*
 
 
 object RetrofitParser {
@@ -12,10 +10,6 @@ object RetrofitParser {
     fun getSymbol(wrapper: SymbolWrapper2?)
     : List<SymbolData> =  wrapper?.let {listOf(it.securities.security)} ?: listOf()
 
-
     fun getHistory(wrapper: MarketHistoryMultiple?)
             : List<DayData> =  wrapper?.history?.day?.toList() ?: listOf()
-
-    fun getQuote(wrapper: QuoteWrapper2?)
-            : Quote? =  wrapper?.quotes?.quote
 }

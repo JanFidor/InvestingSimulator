@@ -11,8 +11,6 @@ import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.example.investingsimulator.models.stockModel.StockTemplate
 
 abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(application: Application) : AndroidViewModel(application) {
-    //private val _repository = RecipeRepository(application)
-
     protected open val _repository by lazy {RepositoryTemplateRoom<T>(application)}
 
     protected abstract val stockAll: MutableMap<String, U>

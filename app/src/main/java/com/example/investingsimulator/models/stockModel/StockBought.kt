@@ -1,15 +1,11 @@
 package com.example.investingsimulator.models.stockModel
 
 import com.example.investingsimulator.room.bought.StockBoughtRoom
-import com.example.investingsimulator.room.templates.StockTemplateRoom
 
-class StockBought(override val stockData: StockBoughtRoom): StockTemplate(stockData) {
+class StockBought(override val stock: StockBoughtRoom): StockTemplate(stock) {
 
     override val symbol: String
-        get() = stockData.symbol
+        get() = stock.symbol
     override val description: String
-        get() = stockData.description
-
-
-    /*override val stockData = stockData as StockBoughtRoom*/
+        get() = stock.description
 }

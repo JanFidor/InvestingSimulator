@@ -1,18 +1,13 @@
-package com.example.investingsimulator.screens
+package com.example.investingsimulator.screens.recyclerViewAdapters
 
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.investingsimulator.databinding.RowStockBinding
-import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.room.templates.StockTemplateRoom
-import com.example.investingsimulator.screens.fragments.FragmentStockFavouriteDirections
-import com.example.investingsimulator.screens.viewModels.ViewModelBought
+import com.example.investingsimulator.screens.fragments.FragmentStockTemplate
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 
 abstract class StockTemplateAdapter<T : StockTemplateRoom, U : StockTemplate>(
@@ -39,7 +34,7 @@ abstract class StockTemplateAdapter<T : StockTemplateRoom, U : StockTemplate>(
 
     abstract inner class StockHolder<T  : StockTemplateRoom>(
         protected val binding: RowStockBinding,
-        private val fragment: Fragment,
+        private val fragment: FragmentStockTemplate<T, U>,
         private val viewModel: ViewModelTemplate<T, U>
     ) : RecyclerView.ViewHolder(binding.root) {
 

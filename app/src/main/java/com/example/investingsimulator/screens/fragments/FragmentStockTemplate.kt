@@ -11,14 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.investingsimulator.R
 import com.example.investingsimulator.databinding.FragmentStockListBinding
 import com.example.investingsimulator.models.stockModel.StockTemplate
-import com.example.investingsimulator.screens.StockTemplateAdapter
+import com.example.investingsimulator.screens.recyclerViewAdapters.StockTemplateAdapter
 import com.example.investingsimulator.screens.viewModels.ViewModelTemplate
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.jakewharton.rxbinding4.appcompat.queryTextChangeEvents
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.math.round
 
 abstract class FragmentStockTemplate<T : StockTemplateRoom, U : StockTemplate> :  Fragment() {
     private lateinit var binding: FragmentStockListBinding

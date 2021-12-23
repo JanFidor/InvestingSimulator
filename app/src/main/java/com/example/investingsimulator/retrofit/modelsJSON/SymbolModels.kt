@@ -1,5 +1,4 @@
-package com.example.investingsimulator.retrofit
-
+package com.example.investingsimulator.retrofit.modelsJSON
 
 import com.example.investingsimulator.room.templates.StockTemplateRoom
 import com.google.gson.annotations.SerializedName

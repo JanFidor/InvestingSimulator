@@ -16,5 +16,5 @@
     <string name="text_value_amount">Value: %1$.2f $</string>
 
 
-
+    <integer name="default_wallet_funds">1000</integer>
 </resources>

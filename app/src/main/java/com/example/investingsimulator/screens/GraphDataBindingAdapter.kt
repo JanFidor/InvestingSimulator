@@ -39,50 +39,41 @@ class GraphDataBindingAdapter{
         fun borderVisibility(view: CandleStickChart, stockAnalysis: StockAnalysis?) {
             if(stockAnalysis == null) return
 
-            val values = stockAnalysis.candleData
+            val candles = stockAnalysis.candles
+            val candlesDataSet = CandleDataSet(candles, "")
 
-            /*for(v in values) Log.d("candle", "${v.open}   ${v.close}")*/
+            candlesDataSet.isHighlightEnabled = true
+            candlesDataSet.setDrawIcons(false)
+            candlesDataSet.axisDependency = YAxis.AxisDependency.LEFT
+            candlesDataSet.color = Color.rgb(80, 80, 80)
+            candlesDataSet.shadowColor = Color.DKGRAY
+            candlesDataSet.shadowWidth = 2f
+            candlesDataSet.decreasingColor = Color.RED
+            candlesDataSet.decreasingPaintStyle = Paint.Style.FILL
+            candlesDataSet.increasingPaintStyle = Paint.Style.FILL
+            candlesDataSet.increasingColor = Color.GREEN
+            candlesDataSet.neutralColor = Color.BLUE
+            candlesDataSet.setDrawValues(false)
 
-            /*val set = CandleDataSet(values, stockAnalysis.stockName)*/
-            val set = CandleDataSet(values, "")
-
-            set.isHighlightEnabled = true
-            set.setDrawIcons(false)
-            set.axisDependency = YAxis.AxisDependency.LEFT
-            set.color = Color.rgb(80, 80, 80)
-            set.shadowColor = Color.DKGRAY
-            set.shadowWidth = 2f
-            set.decreasingColor = Color.RED
-            set.decreasingPaintStyle = Paint.Style.FILL
-            set.increasingPaintStyle = Paint.Style.FILL
-            /*set.increasingColor = Color.rgb(122, 242, 84)*/
-            set.increasingColor = Color.GREEN
-            set.neutralColor = Color.BLUE
-            set.setDrawValues(false)
-
-            /*view.description.textColor = Color.GRAY
-            view.description.textSize = 12f
-            view.description.text = stockAnalysis.stockName*/
-
-            var t: Toast? = null
+            var toast: Toast? = null
 
             view.setOnChartValueSelectedListener(object : OnChartValueSelectedListener {
                 override fun onValueSelected(e: Entry?, h: Highlight?) {
                     with(e as CandleEntry){
-                        t?.cancel()
-                        t = Toast.makeText(
+                        toast?.cancel()
+                        toast = Toast.makeText(
                             view.context,
                             "open: $open \n" +
                                 "close: $close \n" +
                                 "high: $high \n" +
                                 "low: $low \n" +
-                                "volume: ${stockAnalysis.volumeData[x.toInt()]} \n" +
-                                "date: ${stockAnalysis.dateData[x.toInt()]}",
+                                "volume: ${stockAnalysis.volumes[x.toInt()]} \n" +
+                                "date: ${stockAnalysis.dates[x.toInt()]}",
                             Toast.LENGTH_LONG
                         )
-                        t?.setGravity(Gravity.TOP, 0, 300)
+                        toast?.setGravity(Gravity.TOP, 0, 300)
 
-                        t?.show()
+                        toast?.show()
                     }
                 }
 
@@ -97,9 +88,9 @@ class GraphDataBindingAdapter{
             view.axisRight.setDrawLabels(false)
             view.axisLeft.textColor = Color.GRAY
             view.xAxis.textColor = Color.GRAY
-            view.xAxis.valueFormatter = CustomGraphFormatter(stockAnalysis.dateData)
-            val data1 = CandleData(set)
-            view.data = data1
+            view.xAxis.valueFormatter = CustomGraphFormatter(stockAnalysis.dates)
+            val candlesFinal = CandleData(candlesDataSet)
+            view.data = candlesFinal
             view.invalidate()
         }
     }
