@@ -20,7 +20,7 @@ class FragmentStockDetails :  Fragment() {
     }
 
     private val args: FragmentStockDetailsArgs by navArgs()
-    protected val viewModelBought: ViewModelBought by activityViewModels()
+    private val viewModelBought: ViewModelBought by activityViewModels()
 
     val stock by lazy{args.stockData}
 
@@ -44,24 +44,20 @@ class FragmentStockDetails :  Fragment() {
     }
 
     fun buy(){
-        Log.d("popup", "buy")
         if(canBuy){
             args.stockData?.let {
                 val fragment = DialogFragmentBuy(it, viewModelBought, this)
                 fragment.show(parentFragmentManager, "BUY")
             }
         }
-        else{}
     }
 
     fun sell(){
-        Log.d("popup", "sell")
         if(canSell){
             args.stockData?.let {
                 val fragment = DialogFragmentSell(it, viewModelBought, this)
                 fragment.show(parentFragmentManager, "SELL")
             }
         }
-        else{}
     }
 }
