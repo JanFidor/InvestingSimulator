@@ -1,7 +1,5 @@
 package com.example.investingsimulator.screens.popups
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.investingsimulator.R
 import com.example.investingsimulator.models.stockModel.StockBought
 import com.example.investingsimulator.models.stockModel.StockFavourite
@@ -21,17 +19,18 @@ class DialogFragmentSell(stock : StockTemplate, viewModel: ViewModelBought, frag
 
     override val symbol = stock.symbol
 
-    // TODO Proper fund gathering
-
-    override fun observeValue(value: String) {
-        Log.d("trade", "sell, $value")
+    override fun getValueAndAmount(value: String): Pair<Float, Float> {
         val price = stock.last.value!!.toFloat().round(2)
         val amount = value.toFloat()
 
         val correctValue = min(owned, amount).round(5)
         val correctAmount = (correctValue * price)
 
-        // TODO if no new day -> get last from last day
+        return Pair(correctValue, correctAmount)
+    }
+
+    override fun observeValue(value: String) {
+        val (correctValue, correctAmount) = getValueAndAmount(value)
 
         transactionValue.postValue(correctValue.toString())
         transactionAmount.postValue(getString(R.string.text_value_amount, correctAmount))

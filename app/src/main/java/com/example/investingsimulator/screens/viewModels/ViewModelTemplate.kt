@@ -22,10 +22,9 @@ abstract class ViewModelTemplate<T : StockTemplateRoom, U : StockTemplate>(appli
 
     protected var searched: String = ""
 
-    protected open fun filterSavedStocks(): List<U> {
+    protected open fun filterSavedStocks() {
         val list = getSearchedSavedStocks()
         _stockVisible.postValue(list)
-        return list
     }
 
     private fun getSearchedSavedStocks(): List<U>{

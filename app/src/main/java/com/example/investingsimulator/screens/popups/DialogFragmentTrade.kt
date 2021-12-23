@@ -59,13 +59,9 @@ abstract class DialogFragmentTrade(val stock: StockTemplate, protected val viewM
         return binding.root
     }
 
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-        Log.d("popupTrade", "dismiss")
-    }
-
     abstract fun observeValue(value: String)
     abstract fun executeTrade()
+    abstract fun getValueAndAmount(value: String): Pair<Float, Float>
 
 }
 

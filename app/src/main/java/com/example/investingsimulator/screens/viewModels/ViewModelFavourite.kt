@@ -34,8 +34,8 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
             .processStockSymbolsToStockModels(): Observable<StockFavourite>{
 
         return this
-            .take(20)
             .flatMap {Observable.fromIterable(it)}
+            .take(10)
             .filter{stockSymbol -> stockSymbol.symbol !in stockAll}
             .map{symbolData -> StockFavouriteRoom(
                 symbolData.symbol, symbolData.description ?: "")}
@@ -44,7 +44,7 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
             .observeOn(AndroidSchedulers.mainThread())
     }
 
-    private fun getStockSymbols(list: List<StockFavourite>){
+    private fun getStockSymbols(){
         val disposable = RetrofitInstance
             .getSearchedStocks(searched)
             .processStockSymbolsToStockModels()
@@ -53,28 +53,28 @@ open class ViewModelFavourite(application: Application) : ViewModelTemplate<Stoc
                 if(stockFavourite.symbol !in temporaryCache) {
                     temporaryCache[stockFavourite.symbol] = stockFavourite
                 }
-                _stockVisible.postValue(list.plus(stockFavourite))},
-            {getStockSymbol(list)}
+
+                _stockVisible.postValue(_stockVisible.value?.plus(stockFavourite))},
+            {getStockSymbol()}
         )
 
         compositeDisposable.add(disposable)
     }
 
-    private fun getStockSymbol(list: List<StockFavourite>){
+    private fun getStockSymbol(){
         val disposable = RetrofitInstance
             .getSearchedStock(searched)
             .processStockSymbolsToStockModels()
             .subscribe(
-            {_stockVisible.postValue(list.plus(it)) },
+            {_stockVisible.postValue(_stockVisible.value?.plus(it))},
             {e -> Log.e("Get single stock symbol", e.message.toString())}
         )
         compositeDisposable.add(disposable)
     }
 
-    override fun filterSavedStocks(): List<StockFavourite> {
+    override fun filterSavedStocks() {
         val list = super.filterSavedStocks()
-        if(searched != "") getStockSymbols(list)
-        return list
+        if(searched != "") getStockSymbols()
     }
 
     override fun addStock(stock: StockFavouriteRoom) {
