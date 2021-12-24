@@ -6,76 +6,77 @@ import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.room.bought.RepositoryBoughtRoom
 import com.example.investingsimulator.room.bought.StockBoughtRoom
 
+
 class ViewModelBought(application: Application) : ViewModelTemplate<StockBoughtRoom, StockBought>(application) {
-    override val _repository = RepositoryBoughtRoom(application)
+    override val repository = RepositoryBoughtRoom(application)
 
     override val stockAll: MutableMap<String, StockBought>
             by lazy {
-                val map = mutableMapOf<String, StockBought>()
-                _repository.getAll().forEach { map[it.symbol] = StockBought(it) }
-                map}
-    /*override val stockAll: MutableLiveData<List<StockTemplate>> =
-        MutableLiveData(_repository.getAll().map{StockFavourite(it)})*/
+                repository
+                    .getAll()
+                    .map{it.symbol to StockBought(it)}
+                    .toMap()
+                    .toMutableMap()}
 
-    override fun add(stock: StockBoughtRoom) {
-        _repository.create(stock)
+    override fun addStock(stock: StockBoughtRoom) {
+        repository.create(stock)
         stockAll[stock.symbol] = StockBought(stock)
-        filterStock()
+        filterSavedStocks()
     }
 
-    override fun delete(stock: StockBoughtRoom) {
-        _repository.delete(stock)
+    override fun deleteStock(stock: StockBoughtRoom) {
+        repository.delete(stock)
         stockAll.remove(stock.symbol)
-        filterStock()
+        filterSavedStocks()
     }
 
-    fun update(stock: StockBoughtRoom) {
-        _repository.update(stock)
+    private fun update(stock: StockBoughtRoom) {
+        repository.update(stock)
         stockAll[stock.symbol] = StockBought(stock)
-        filterStock()
+        filterSavedStocks()
     }
 
-    fun getAmount(stockName: String): Float = stockAll[stockName]?.stock?.amount?.toFloat() ?: 0F
+    fun getAmount(stockName: String): Float = stockAll[stockName]?.stockData?.amount?.toFloat() ?: 0F
 
-
-    fun buy(stock: StockTemplate, amount: Float){
+    private fun initializeStockBoughtRoom(stock: StockTemplate, amount: Double): StockBoughtRoom{
         val symbol = stock.symbol
         val description = stock.description
-        val amount = amount.toDouble() + (stockAll[stock.symbol]?.stock?.amount ?: 0.0)
 
         // TODO PRICE
         val price = 0.0
-        val stock = StockBoughtRoom(symbol, description, amount,price)
 
-        if(symbol in stockAll) {
-            update(stock)
+        return StockBoughtRoom(symbol, description, amount,price)
+    }
+
+    fun buy(stock: StockTemplate, amount: Float){
+        val totalAmount = amount.toDouble() + (stockAll[stock.symbol]?.stockData?.amount ?: 0.0)
+        val stockBought = initializeStockBoughtRoom(stock, totalAmount)
+
+        if(stock.symbol in stockAll) {
+            update(stockBought)
         }
         else{
-            add(stock)
+            addStock(stockBought)
         }
-
-        // TODO Update funds
     }
 
     fun sell(stock: StockTemplate, amount: Float){
-        val symbol = stock.symbol
-        val description = stock.description
-        val amount = (stockAll[stock.symbol]?.stock?.amount ?: 0.0) - amount.toDouble()
+        val totalAmount = (stockAll[stock.symbol]?.stockData?.amount ?: 0.0) - amount.toDouble()
+        val stockBought = initializeStockBoughtRoom(stock, totalAmount)
 
-        // TODO PRICE
-        val price = 0.0
-        val stock = StockBoughtRoom(symbol, description, amount,price)
-
-        if(amount == 0.0) {
-            delete(stock)
+        if(totalAmount == 0.0) {
+            deleteStock(stockBought)
         }
         else{
-            update(stock)
+            update(stockBought)
         }
     }
 
-    fun getValue(): Float{
-        return stockAll.map{it.value}.map{it.stock.amount.toFloat() * (it.last.value ?: 0f)}.sum()
+    fun getTotalWalletValue(): Float{
+        return stockAll
+            .map{it.value}
+            .map{it.stockData.amount.toFloat() * (it.last.value ?: 0f)}
+            .sum()
     }
 
 }

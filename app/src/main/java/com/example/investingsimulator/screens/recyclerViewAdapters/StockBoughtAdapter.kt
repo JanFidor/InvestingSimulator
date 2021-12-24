@@ -11,6 +11,7 @@ import com.example.investingsimulator.screens.fragments.FragmentStockBought
 import com.example.investingsimulator.screens.fragments.FragmentStockBoughtDirections
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
 
+
 class StockBoughtAdapter (
     stockList: List<StockBought>,
     fragment: FragmentStockBought,
@@ -49,7 +50,6 @@ class StockBoughtAdapter (
         }
 
         override fun openGraph() {
-            Log.d("nav", "nav")
             val action = FragmentStockBoughtDirections
                 .actionWalletFragmentToFragmentStockDetails(
                     binding.stockData, binding.stockData?.symbol ?: "")

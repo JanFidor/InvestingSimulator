@@ -11,5 +11,4 @@ data class StockBoughtRoom(
     override val description: String,
     var amount: Double,
     var price: Double,
-    ) : StockTemplateRoom() {
-}
+    ) : StockTemplateRoom()

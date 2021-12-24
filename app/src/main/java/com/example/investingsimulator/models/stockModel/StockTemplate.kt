@@ -13,8 +13,9 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.Serializable
 
+
 abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
-    abstract val stock: StockTemplateRoom
+    abstract val stockData: StockTemplateRoom
     private val _text = MutableLiveData("")
     val text: LiveData<String>
         get() = _text
@@ -36,33 +37,44 @@ abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
 
     init{
         Log.d("access", stock.symbol)
+        val observable = initializeStockHistoryObservable(stock.symbol)
 
-        val stockHistory = initializeStockHistoryObservable()
-
-        stockHistory
+        observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {assignPropertyValues(it)},
-                {Log.e("api error", it.message.toString())})
+                {interpretStockHistory(it)},
+                {Log.e("api error", it.message.toString())}
+            )
     }
 
-    private fun initializeStockHistoryObservable(): Observable<List<DayData>> {
+
+    private fun initializeStockHistoryObservable(stockSymbol: String): Observable<List<DayData>> {
         val end = getCalculatedDate(-1)
         val start = getCalculatedDate(-31)
 
-        return RetrofitInstance.getHistory(stock.symbol, start, end)
+        return RetrofitInstance.getHistory(stockSymbol, start, end)
     }
 
-    private fun assignPropertyValues(stockHistory: List<DayData>){
+    private fun interpretStockHistory(stockHistory: List<DayData>){
         if (stockHistory.isEmpty()) return
+        val (open, close) = getStockEdgeValues(stockHistory)
+        assignPropertyValues(stockHistory, open, close)
+    }
 
+    private fun getStockEdgeValues(stockHistory: List<DayData>): Pair<Float, Float>{
         val open = stockHistory.first().open ?: 1f
         val close = stockHistory.last().close ?: 1f
 
+        return Pair(open, close)
+    }
+
+    private fun assignPropertyValues(stockHistory: List<DayData>, open: Float, close: Float){
         _change.value = ((close / open) - 1) * 100
         _last.value = stockHistory.last().close
         _data.value = StockAnalysis(stockHistory)
     }
-}
 
+
+
+}

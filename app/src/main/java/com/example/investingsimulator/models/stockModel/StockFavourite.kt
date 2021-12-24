@@ -4,7 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
 
-class StockFavourite (override val stock: StockFavouriteRoom, observe: Boolean): StockTemplate(stock) {
+
+class StockFavourite(override val stockData: StockFavouriteRoom,
+                     observe: Boolean): StockTemplate(stockData){
 
     private val _observed = MutableLiveData(observe)
     val observed: LiveData<Boolean>
@@ -14,10 +16,10 @@ class StockFavourite (override val stock: StockFavouriteRoom, observe: Boolean):
         _observed.postValue(_observed.value?.not() ?: true)
     }
 
-    fun getCore() = stock
+    fun getCore() = stockData
 
     override val symbol: String
-        get() = stock.symbol
+        get() = stockData.symbol
     override val description: String
-        get() = stock.description
+        get() = stockData.description
 }

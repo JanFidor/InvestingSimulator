@@ -2,6 +2,7 @@ package com.example.investingsimulator.room.templates
 
 import android.app.Application
 
+
 open class RepositoryTemplateRoom<T : StockTemplateRoom>(application: Application) {
     protected val db = StockDB.getInstance(application)
     protected open val stockDao: RoomDAO<T>? = null

@@ -1,15 +1,14 @@
 package com.example.investingsimulator.screens.recyclerViewAdapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.example.investingsimulator.databinding.RowStockBinding
 import com.example.investingsimulator.models.TextFormatting
 import com.example.investingsimulator.models.stockModel.StockFavourite
 import com.example.investingsimulator.models.stockModel.StockTemplate
 import com.example.investingsimulator.room.favourite.StockFavouriteRoom
+import com.example.investingsimulator.screens.ToastType
 import com.example.investingsimulator.screens.fragments.FragmentStockFavourite
 import com.example.investingsimulator.screens.fragments.FragmentStockFavouriteDirections
 import com.example.investingsimulator.screens.viewModels.ViewModelFavourite
@@ -53,7 +52,6 @@ class StockFavouriteAdapter(
         }
 
         override fun openGraph() {
-            Log.d("nav", "nav")
             val action = FragmentStockFavouriteDirections
                 .actionSearchFragmentToFragmentStockDetails(
                     binding.stockData, binding.stockData?.symbol ?: "")
@@ -62,28 +60,18 @@ class StockFavouriteAdapter(
 
 
         override fun observe(stock: StockTemplate){
-            val stock = stock as StockFavourite
-            Log.d("click", "click")
-            TextFormatting.setObservedColor(stock.observed.value?.not() ?: true, binding.star)
+            val stockFavourite = stock as StockFavourite
+            TextFormatting.setObservedColor(stockFavourite.observed.value?.not() ?: true, binding.star)
 
-            if (stock.observed.value != false) {
-                Toast.makeText(
-                    binding.root.context,
-                    "deleted ${stock.symbol} from observed",
-                    Toast.LENGTH_SHORT
-                ).show()
-
-                viewModel.delete(stock.getCore())
-            } else {
-                Toast.makeText(binding.root.context, "added ${stock.symbol} to observed", Toast.LENGTH_SHORT)
-                    .show()
-                viewModel.add(stock.getCore())
+            if (stockFavourite.observed.value != false) {
+                ToastType.ObservedRemove.getToast(binding.root.context, stockFavourite.symbol).show()
+                viewModel.deleteStock(stockFavourite.getCore())
             }
-
-            stock.changeObservedStatus()
-
+            else {
+                ToastType.ObservedAdd.getToast(binding.root.context, stockFavourite.symbol).show()
+                viewModel.addStock(stockFavourite.getCore())
             }
+            stockFavourite.changeObservedStatus()
         }
-
-
+    }
 }

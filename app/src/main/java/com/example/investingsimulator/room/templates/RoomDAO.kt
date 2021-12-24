@@ -16,6 +16,5 @@ interface RoomDAO<T> {
     @Update
     fun update(stock : T)
 
-
     fun getAll(): List<T>
 }

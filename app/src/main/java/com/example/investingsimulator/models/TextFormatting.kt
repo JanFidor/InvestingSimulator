@@ -32,7 +32,7 @@ object TextFormatting {
     fun setObservedColor(bool: Boolean, view: ImageView){
         if(bool){
             view.setColorFilter(ContextCompat.getColor(view.context,
-                R.color.teal_700))
+                R.color.yellow))
         }
         else{
             view.setColorFilter(ContextCompat.getColor(view.context,

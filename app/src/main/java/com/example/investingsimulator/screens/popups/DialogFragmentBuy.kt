@@ -16,15 +16,18 @@ class DialogFragmentBuy(stock : StockTemplate, viewModel: ViewModelBought, frag:
 
     override val symbol = stock.symbol
 
-    // TODO Proper fund gathering
-
-    override fun observeValue(value: String) {
-        Log.d("trade", "buy, value $value")
-        val value = value.toFloat().round(2)
+    override fun getValueAndAmount(value: String): Pair<Float, Float> {
+        val valueFloat = value.toFloat().round(2)
         val price = stock.last.value!!.toFloat()
 
-        val correctValue = min(funds, value)
+        val correctValue = min(funds, valueFloat)
         val correctAmount = (correctValue / price)
+
+        return Pair(correctValue, correctAmount)
+    }
+
+    override fun observeValue(value: String) {
+        val (correctValue, correctAmount) = getValueAndAmount(value)
 
         transactionValue.postValue(correctValue.toString())
         transactionAmount.postValue(getString(R.string.text_share_amount, correctAmount))

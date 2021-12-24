@@ -1,10 +1,12 @@
 package com.example.investingsimulator.retrofit
 
-import com.example.investingsimulator.retrofit.modelsJSON.*
+import com.example.investingsimulator.retrofit.modelsJSON.MarketHistoryMultiple
+import com.example.investingsimulator.retrofit.modelsJSON.SymbolWrapper2
+import com.example.investingsimulator.retrofit.modelsJSON.SymbolsWrapper2
 import io.reactivex.rxjava3.core.Observable
-import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
+
 
 interface TestRetrofit {
     @GET("/v1/markets/history")
