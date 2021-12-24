@@ -2,6 +2,8 @@ package com.example.investingsimulator.retrofit
 
 import com.example.investingsimulator.retrofit.modelsJSON.DayData
 import com.example.investingsimulator.retrofit.modelsJSON.SymbolData
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ktx.remoteConfig
 import hu.akarnokd.rxjava3.retrofit.RxJava3CallAdapterFactory
 import io.reactivex.rxjava3.core.Observable
 import okhttp3.Interceptor
@@ -13,8 +15,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 
 object RetrofitInstance {
-    private const val TOKEN = "R6vMuvLo20ZMScWN6VvvGfTw4Lzn"
+    private var TOKEN = "placeholder"
     private const val URL = "https://sandbox.tradier.com/"
+    fun setToken(token: String){
+        TOKEN = token
+    }
+
+
 
     private val okHttp = OkHttpClient
         .Builder()
@@ -67,4 +74,6 @@ object RetrofitInstance {
             .client(okHttp)
             .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
     }
+
 }
+

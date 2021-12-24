@@ -2,16 +2,20 @@ package com.example.investingsimulator
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
+import com.example.investingsimulator.retrofit.RetrofitInstance
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
     lateinit var navController: NavController
+    val TOKEN_KEY = "api_token"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +32,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         NavigationUI.setupWithNavController(bottomNavigationView, navController)
 
         initializeFunds()
+        fetchConfig()
     }
 
 
@@ -44,5 +49,28 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
         }
     }
+
+    private fun fetchConfig(){
+        val remoteConfig = initializeRemoteConfig()
+
+        remoteConfig
+            .fetchAndActivate()
+            .addOnSuccessListener {useRemoteToken(remoteConfig)}
+            .addOnFailureListener {e -> Log.e("Error fetching config", e.message.toString())}
+    }
+
+    private fun initializeRemoteConfig(): FirebaseRemoteConfig{
+        val defaultToken = "Token"
+
+        val config = FirebaseRemoteConfig.getInstance()
+        config.setDefaultsAsync(mapOf(TOKEN_KEY  to defaultToken))
+        return  config
+    }
+
+    private fun useRemoteToken(remoteConfig: FirebaseRemoteConfig){
+        val remoteToken = remoteConfig.getString(TOKEN_KEY)
+        RetrofitInstance.setToken(remoteToken)
+    }
+
 }
 
