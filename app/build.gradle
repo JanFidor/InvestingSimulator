@@ -3,8 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id("androidx.navigation.safeargs.kotlin")
-
-
+    id 'com.google.gms.google-services'
 }
 
 android {
@@ -114,6 +113,11 @@ dependencies {
 
     //candle stick graph 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+
+    implementation platform('com.google.firebase:firebase-bom:29.0.3')
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-config'
 
 
 }

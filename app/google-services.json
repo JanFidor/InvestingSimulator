@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "788524786894",
+    "project_id": "investingsimula",
+    "storage_bucket": "investingsimula.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:788524786894:android:7350daeaf6b5b570e75c9f",
+        "android_client_info": {
+          "package_name": "com.example.investingsimulator"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "788524786894-7p8bpikdg17qjcmb28hqinqdkjro5qkk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.investingsimulator",
+            "certificate_hash": "e092cca8ff1a333ddcd1bbbb083df6af3d244d8f"
+          }
+        },
+        {
+          "client_id": "788524786894-5v3ol2b87b88ou2no6tr6d71cteitrnv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-j2aTcSta3bpoQFysdgRUbJFb09AnW3c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "788524786894-5v3ol2b87b88ou2no6tr6d71cteitrnv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
