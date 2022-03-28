@@ -14,7 +14,11 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import java.io.Serializable
 
 
-abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
+abstract class StockTemplate(val stock: StockTemplateRoom) : Serializable{
+    private var _hasHistory = false
+    val hasHistory: Boolean
+            get() = _hasHistory
+
     abstract val stockData: StockTemplateRoom
     private val _text = MutableLiveData("")
     val text: LiveData<String>
@@ -37,15 +41,26 @@ abstract class StockTemplate(stock: StockTemplateRoom) : Serializable{
 
     init{
         Log.d("access", stock.symbol)
+        sendHistoryCall()
+    }
+
+    private fun sendHistoryCall(){
         val observable = initializeStockHistoryObservable(stock.symbol)
 
         observable
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                {interpretStockHistory(it)},
+                {
+                    _hasHistory = true
+                    interpretStockHistory(it)
+                },
                 {Log.e("api error", it.message.toString())}
             )
+    }
+
+    fun getHistory(){
+        if (!_hasHistory) sendHistoryCall()
     }
 
 

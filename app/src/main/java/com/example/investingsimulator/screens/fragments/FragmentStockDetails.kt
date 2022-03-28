@@ -13,10 +13,11 @@ import com.example.investingsimulator.databinding.FragmentDetailsBinding
 import com.example.investingsimulator.screens.popups.DialogFragmentBuy
 import com.example.investingsimulator.screens.popups.DialogFragmentSell
 import com.example.investingsimulator.screens.viewModels.ViewModelBought
+import kotlinx.coroutines.*
 
 class FragmentStockDetails :  Fragment() {
     companion object{
-        val STOCK = "stockData"
+        const val STOCK = "stockData"
     }
 
     private val args: FragmentStockDetailsArgs by navArgs()
@@ -40,7 +41,29 @@ class FragmentStockDetails :  Fragment() {
             stock = this@FragmentStockDetails.stock
             fragment = this@FragmentStockDetails
         }
+
+        historyJob = startHistoryCouroutine()
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelHistoryCouroutine()
+    }
+
+    var historyJob: Job? = null
+
+    fun startHistoryCouroutine(): Job{
+        return GlobalScope.launch(Dispatchers.Main) {
+            while(stock?.hasHistory != true){
+                stock?.getHistory()
+                delay(1000L)
+            }
+        }
+    }
+
+    fun cancelHistoryCouroutine(){
+        historyJob?.cancel()
     }
 
     fun buy(){
